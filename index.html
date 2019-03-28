@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h1>Hello! My name is Jebpab.</h1>
-<p>I'm hosted with GitHub Pages.</p>
-<p>I like bibbibmaap</p>
+    <canvas id = "c" width="640" height="480"></canvas>
+    
+    <script id = "2d-vertex-shader" type="notjs">
+        attribute vec4 a_position;
+
+        void main(){
+            gl_Position = a_position;
+        }
+
+    </script>
+
+    <script id="2d-fragment-shader" type="notjs">
+        precision mediump float;
+
+        void main(){
+            gl_FragColor = vec4(1,0,0.5,1);
+        }
+    </script>
+
 </body>
 </html>
