@@ -3,6 +3,12 @@ body {
   background-color: rgb(255, 247, 223);
   margin: 0;
 }
+
+p {
+  border: 1px solid salmon;
+  padding: 30px;
+}
+
 canvas {
   width: 100vw;
   height: 100vh;
