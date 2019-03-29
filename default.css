@@ -5,7 +5,6 @@ body {
 }
 
 p {
-  border: 1px solid salmon;
   padding: 30px;
 }
 
@@ -13,4 +12,5 @@ canvas {
   width: 100vw;
   height: 100vh;
   display: block;
+  border:5px solid salmon";
 }
