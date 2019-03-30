@@ -44,23 +44,19 @@ function main() {
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
   // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
-  var size = 2;          // 2 components per iteration
-  var type = gl.FLOAT;   // the data is 32bit floats
-  var normalize = false; // don't normalize the data
-  var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
-  var offset = 0;        // start at the beginning of the buffer
+  var size = 2;          
+  var type = gl.FLOAT;   
+  var normalize = false; 
+  var stride = 0;        
+  var offset = 0;        
   gl.vertexAttribPointer(
       positionAttributeLocation, size, type, normalize, stride, offset);
 
-  // set the resolution
+  
   gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
 
   // draw 50 random rectangles in random colors
   for (var ii = 0; ii < 50; ++ii) {
-    // Setup a random rectangle
-    // This will write to positionBuffer because
-    // its the last thing we bound on the ARRAY_BUFFER
-    // bind point
     setRectangle(
         gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300));
 
@@ -75,12 +71,12 @@ function main() {
   }
 }
 
-// Returns a random integer from 0 to range - 1.
+
 function randomInt(range) {
   return Math.floor(Math.random() * range);
 }
 
-// Fill the buffer with the values that define a rectangle.
+
 function setRectangle(gl, x, y, width, height) {
   var x1 = x;
   var x2 = x + width;
