@@ -1,14 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
-<link rel="stylesheet" href="default.css">
-</head>
-<body>
+    <title>Jebpab</title>
+    <link rel="stylesheet" href="default.css">
+    </head>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-<img src="jeppeFace.jpg" width="128" height="128">
+<body>
+    
+    <canvas id="canvas"></canvas>
+    <script src="res/webgl-utils.js"></script>
+    <!-- vertex shader -->
+    <script id="2d-vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    
+    uniform vec2 u_resolution;
+    
+    void main() {
+       // convert the rectangle from pixels to 0.0 to 1.0
+       vec2 zeroToOne = a_position / u_resolution;
+    
+       // convert from 0->1 to 0->2
+       vec2 zeroToTwo = zeroToOne * 2.0;
+    
+       // convert from 0->2 to -1->+1 (clipspace)
+       vec2 clipSpace = zeroToTwo - 1.0;
+    
+       gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+    }
+    </script>
+    <!-- fragment shader -->
+    <script id="2d-fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    
+    uniform vec4 u_color;
+    
+    void main() {
+       gl_FragColor = u_color;
+    }
+    </script>
+    
+    <script src="main.js"></script>
+
+    <h1>Hej</h1>
+    <p>Hur mår du?</p>
+    <img src="jeppeFace.jpg" width="128" height="128">
 
 </body>
 </html>
