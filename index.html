@@ -8,21 +8,10 @@
 <body>
 
     <canvas id="canvas"></canvas>
-    <div id="uiContainer">
-        <div id="ui">
-            <div id="x"></div>
-            <div id="y"></div>
-            <div id="z"></div>
-            <div id="angleX"></div>
-            <div id="angleY"></div>
-            <div id="angleZ"></div>
-            <div id="scaleX"></div>
-            <div id="scaleY"></div>
-            <div id="scaleZ"></div>
-        </div>
-    </div>
+
     <script src="res/webgl-utils.js"></script>
     <script src="res/webgl-ui.js"></script>
+    <script src="res/3d-math.js"></script>
 
     <!-- vertex shader -->
     <script id="3d-vertex-shader" type="x-shader/x-vertex">
@@ -58,7 +47,7 @@
 
     <h1>Hej</h1>
     <p>Hur mår du?</p>
-    <img src="jeppeFace.jpg" width="128" height="128" class="center">
+    <img src="jeppeFace.jpg" width="128" height="128">
 
 </body>
 </html>
