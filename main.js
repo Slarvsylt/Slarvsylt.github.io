@@ -47,12 +47,21 @@ function main() {
   var fieldOfViewRadians = degToRad(60);
   var rotationSpeed = 1.2;
 
-  drawScene();
+  var then = 0;
+
+  requestAnimationFrame(drawScene);
 
   // Draw the scene.
-  function drawScene() {
+  function drawScene(now) {
+    // Convert to seconds
+    now *= 0.001;
+    // Subtract the previous time from the current time
+    var deltaTime = now - then;
+    // Remember the current time for the next frame.
+    then = now;
+
     // Every frame increase the rotation a little.
-    rotation[1] += rotationSpeed / 60.0;  // don't do this
+    rotation[1] += rotationSpeed * deltaTime;
 
     webglUtils.resizeCanvasToDisplaySize(gl.canvas);
 
