@@ -9,41 +9,7 @@
 <body>
 
     <canvas id="canvas"></canvas>
-
-    <script src="res/webgl-utils.js"></script>
-    <script src="res/webgl-ui.js"></script>
-    <script src="res/m4.js"></script>
     <script src="res/three.js"></script>
-
-    <!-- vertex shader -->
-    <script id="3d-vertex-shader" type="x-shader/x-vertex">
-    attribute vec4 a_position;
-    attribute vec4 a_color;
-
-    uniform mat4 u_matrix;
-
-    varying vec4 v_color;
-
-    void main() {
-      // Multiply the position by the matrix.
-      gl_Position = u_matrix * a_position;
-
-      // Pass the color to the fragment shader.
-      v_color = a_color;
-    }
-    </script>
-
-    <!-- fragment shader -->
-    <script id="3d-fragment-shader" type="x-shader/x-fragment">
-    precision mediump float;
-
-    // Passed in from the vertex shader.
-    varying vec4 v_color;
-
-    void main() {
-       gl_FragColor = v_color;
-    }
-    </script>
     
     <script src="threeTest.js"></script>
 

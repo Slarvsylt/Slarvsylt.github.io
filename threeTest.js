@@ -21,3 +21,5 @@ var animate = function () {
 
 	renderer.render( scene, camera );
 };
+
+animate();
