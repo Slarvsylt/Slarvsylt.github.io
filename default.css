@@ -4,7 +4,7 @@ body {
 }
 
 span {
-
+  display: block;
   padding: 30px;
   border:5px solid salmon;
 }
