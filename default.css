@@ -1,11 +1,11 @@
 body {
   background-color: rgb(255, 247, 223);
   margin: 0;
-  border:5px solid salmon";
 }
 
 p {
   padding: 30px;
+  border:5px solid salmon";
 }
 
 h1 {
