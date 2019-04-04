@@ -3,7 +3,8 @@ body {
   margin: 0;
 }
 
-p {
+span {
+
   padding: 30px;
   border:5px solid salmon;
 }
