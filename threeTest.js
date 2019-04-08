@@ -1,72 +1,106 @@
-var colors = [0x05A8AA, 0xB8D5B8, 0xD7B49E, 0xDC602E,
-			 0xBC412B, 0xF19C79, 0xCBDFBD, 0xF6F4D2,
-			  0xD4E09B, 0xFFA8A9, 0xF786AA, 0xA14A76, 
-			  0xBC412B, 0x63A375, 0xD57A66, 0x731A33,
-			   0xCBD2DC, 0xDBD48E, 0x5E5E5E];
-
-var scene, camera, renderer, geometry, mesh;
-
-var verticePositions = [];
+var scene, camera, renderer;
+var material, rocks;
+var angle = 0;
 
 function initScene() {
-	scene = new THREE.Scene();
-	camera = new THREE.PerspectiveCamera(30,window.innerWidth/window.innerHeight, 0.1, 1000);
-	renderer = new THREE.WebGLRenderer({alpha: true});
-	camera.position.z = 100;
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera( 80, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
 }
 
-function initLightning() {
-
-	var light = new THREE.DirectionalLight( 0xffffff, 1 );
-	light.position.set( 0, 1, 0 );
-	scene.add( light );
-  
-	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	light.position.set( 0, -1, 0 );
-	scene.add( light );
-  
-	var light = new THREE.DirectionalLight( 0xffffff, 1 );
-	light.position.set( 1, 0, 0 );
-	scene.add( light );
-  
-	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	light.position.set( 0, 0, 1 );
-	scene.add( light );
-  
-	var light = new THREE.DirectionalLight( 0xffffff, 1 );
-	light.position.set( 0, 0, -1 );
-	scene.add( light );
-  
-	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-	light.position.set( -1, 0, 0 );
-	scene.add( light );
+function loadRockTexture() {
+  var textureLoader = new THREE.TextureLoader();
+  textureLoader.crossOrigin = true;
+  textureLoader.load('jeppeFace.jpg', function(texture) {
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 2, 2 );
+    material = new THREE.MeshLambertMaterial( {map: texture} );  
+    createRocks();
+  });
 }
 
-function initGeometry() {
-	geometry = new THREE.IcosahedronGeometry(20);
-	for(var i = 0; i < geometry.faces.length; i++) {
-		var face = geometry.faces[i];
-		face.color.setHex(colors[i]);
-	}
+function createRocks() {
+  rocks = [];
+  for (var i = 0; i < 100; i++) {
+    var r = new Rock();
+    rocks.push(r);
+  }
+}
 
-	mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors } ));
-	scene.add( mesh );
+function initLights() {
+  var light = new THREE.PointLight( 0xFFFFFF );
+  light.position.set( 300, 300, 0 );
+  scene.add( light );
+
+  var light = new THREE.PointLight( 0xFFFFFF );
+  light.position.set( 0, 300, 300 );
+  scene.add( light );
+}
+
+function Rock() {
+  // init
+  var size = 10+Math.random()*10;
+  var geometry = new THREE.IcosahedronGeometry(size, 0);
+  var icosahedron = new THREE.Mesh( geometry, material );
+  
+  for (var i = 0, l = geometry.vertices.length; i<l; i++) {
+    geometry.vertices[i].x += size*-0.25 + Math.random()*size*0.5;
+    geometry.vertices[i].y += size*-0.25 + Math.random()*size*0.5;
+  }
+  
+  // rotate cube
+  var variance = 0.01;
+  this.vr = {
+    x: -variance + Math.random()*variance*2,
+    y: -variance + Math.random()*variance*2
+  }
+  var field = 300;
+  scene.add( icosahedron );
+  icosahedron.position.x = -field+Math.random()*field*2;
+  icosahedron.position.y = -field+Math.random()*field*2;
+  icosahedron.position.z = -field+Math.random()*field*2;
+  
+  this.mesh = icosahedron;
+}
+
+Rock.prototype.rotate = function() {
+  this.mesh.rotation.x += this.vr.x;
+  this.mesh.rotation.y += this.vr.y;
 }
 
 function render() {
-	requestAnimationFrame( render );
-	renderer.render(scene, camera);
-};
+  requestAnimationFrame( render );
+
+  renderer.render(scene, camera);
+  for (var i = 0; i < 100; i++) {
+    rocks[i].rotate();
+  }
   
-function resize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
-	camera.updateProjectionMatrix();
-	renderer.setSize( window.innerWidth, window.innerHeight );
+  updateCamPosition();
 }
 
-initScene();
-initLighting();
-initGeometry();
-render();
+function updateCamPosition() {
+  angle += 0.005;
+  var z = 100 * Math.cos(angle);
+  var y = 100 * Math.sin(angle);
+
+  camera.position.z = z;
+  camera.position.y = y;
+  camera.rotation.x = z*0.02;
+}
+
+function resize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
 
 window.addEventListener("resize", resize);
+
+initScene();
+initLights();
+loadRockTexture();
+render();
