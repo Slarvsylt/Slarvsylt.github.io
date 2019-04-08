@@ -1,25 +1,72 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, 
-        window.innerWidth/window.innerHeight, 0.1, 1000 );
+var colors = [0x05A8AA, 0xB8D5B8, 0xD7B49E, 0xDC602E,
+			 0xBC412B, 0xF19C79, 0xCBDFBD, 0xF6F4D2,
+			  0xD4E09B, 0xFFA8A9, 0xF786AA, 0xA14A76, 
+			  0xBC412B, 0x63A375, 0xD57A66, 0x731A33,
+			   0xCBD2DC, 0xDBD48E, 0x5E5E5E];
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+var scene, camera, renderer, geometry, mesh;
 
-var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+var verticePositions = [];
 
-camera.position.z = 5;
+function initScene() {
+	scene = new THREE.Scene();
+	camera = new THREE.PerspectiveCamera(30,window.innerWidth/window.innerHeight, 0.1, 1000);
+	renderer = new THREE.WebGLRenderer({alpha: true});
+	camera.position.z = 100;
+}
 
-var animate = function () {
-	requestAnimationFrame( animate );
+function initLightning() {
 
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+	var light = new THREE.DirectionalLight( 0xffffff, 1 );
+	light.position.set( 0, 1, 0 );
+	scene.add( light );
+  
+	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( 0, -1, 0 );
+	scene.add( light );
+  
+	var light = new THREE.DirectionalLight( 0xffffff, 1 );
+	light.position.set( 1, 0, 0 );
+	scene.add( light );
+  
+	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( 0, 0, 1 );
+	scene.add( light );
+  
+	var light = new THREE.DirectionalLight( 0xffffff, 1 );
+	light.position.set( 0, 0, -1 );
+	scene.add( light );
+  
+	var light = new THREE.DirectionalLight( 0xffffff, 0.5 );
+	light.position.set( -1, 0, 0 );
+	scene.add( light );
+}
 
-	renderer.render( scene, camera );
+function initGeometry() {
+	geometry = new THREE.IcosahedronGeometry(20);
+	for(var i = 0; i < geometry.faces.length; i++) {
+		var face = geometry.faces[i];
+		face.color.setHex(colors[i]);
+	}
+
+	mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors } ));
+	scene.add( mesh );
+}
+
+function render() {
+	requestAnimationFrame( render );
+	renderer.render(scene, camera);
 };
+  
+function resize() {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
 
-animate();
+initScene();
+initLighting();
+initGeometry();
+render();
+
+window.addEventListener("resize", resize);
