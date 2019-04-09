@@ -1,11 +1,11 @@
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var renderer = new THREE.WebGLRenderer();
 camera.position.set(5,5,0);
 camera.lookAt(new THREE.Vector3(0,0,0));
-var renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(300,300);
+renderer.setSize(window.innerWidth/2,window.innerHeight/2);
 renderer.setClearColor(0xfff6e6);
-document.getElementById("test").appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
 var plane = new THREE.Mesh(
   new THREE.PlaneGeometry( 5, 5, 5, 5 ),
