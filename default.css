@@ -1,11 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: monospace;
+  background-color: #000;
   line-height: 1.5;
   font-size: 15px;
   overflow-x: hidden;
   min-height: 100%;
+}
+
+#info {
+  position: relative;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 html {
