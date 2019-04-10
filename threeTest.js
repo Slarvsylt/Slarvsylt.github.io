@@ -6,7 +6,7 @@ animate();
 function init(){
 
 	var ASPECT_RATIO = window.innerWidth / window.innerHeight;
-	var AMOUNT = 6;
+	var AMOUNT = 1;
 	var WIDTH = ( window.innerWidth / AMOUNT ) * window.devicePixelRatio;
   var HEIGHT = ( window.innerHeight / AMOUNT ) * window.devicePixelRatio;
   
@@ -19,7 +19,7 @@ function init(){
 			subcamera.position.x = ( x / AMOUNT ) - 0.5;
 			subcamera.position.y = 0.5 - ( y / AMOUNT );
 			subcamera.position.z = 1.5;
-			subcamera.position.multiplyScalar( 2 );
+			subcamera.position.multiplyScalar( 4 );
 			subcamera.lookAt( 0, 0, 0 );
 			subcamera.updateMatrixWorld();
 			cameras.push( subcamera );
@@ -27,27 +27,27 @@ function init(){
   }
   
 	camera = new THREE.ArrayCamera( cameras );
-  camera.position.z = 3;
+  camera.position.z = 2;
   
 	scene = new THREE.Scene();
   scene.add( new THREE.AmbientLight( 0x222244 ) );
   
 	var light = new THREE.DirectionalLight();
-	light.position.set( 1.5, 0.5, 1 );
+	light.position.set( 0, 0.5, 1 );
 	light.castShadow = true;
 	light.shadow.camera.zoom = 4; // tighter shadow map
   scene.add( light );
   
 	var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
-  var material = new THREE.MeshPhongMaterial( { color: 0x669966 } );
+	var material = new THREE.MeshPhongMaterial( { color: 0x000000} );
   
   var background = new THREE.Mesh( geometry, material );
 	background.receiveShadow = true;
 	background.position.set( 0, 0, - 1 );
   scene.add( background );
   
-	var geometry = new THREE.OctahedronBufferGeometry( 1, 1 );
-  var material = new THREE.MeshStandardMaterial( { color: 0xfffe66, shading: THREE.FlatShading, metalness: 0, roughness: 0.9 } );
+	var geometry = new THREE.CylinderBufferGeometry( 0.5,0.5,1.5,32);
+  var material = new THREE.MeshStandardMaterial( { color: 0xfff222, roughness: 0.9 } );
   
 	mesh = new THREE.Mesh( geometry, material );
 	mesh.castShadow = true;
