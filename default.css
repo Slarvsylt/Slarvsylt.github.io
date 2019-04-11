@@ -1,6 +1,6 @@
 body {
 	font-family: 'Playfair Display', serif;
-	background-color:#fffe6e;
+	background-color:#ffffd6;
 	width:100%;margin:0px;height:auto;
 	cursor:default;overflow-y:auto;
 }
@@ -25,26 +25,54 @@ a:active {color:#fff;}
 canvas {
   width: 100%;
   height: 100%;
-  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/space-texture.jpg');
-  background-size: 500px;
+  display: block;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 
 .main_cointainer{
-  width:760px;
-  max-width:760px;
-  min-width:760px;
-	padding:30px;
-	margin: 0px auto;
-	overflow:hidden;
+  width: 60%;
+  padding:15px 50px;
+  margin: auto;
+  margin-left:auto; 
+  margin-right:auto;
+  overflow:hidden;
+  /*display: table;*/
 }
 
 .intro_container{
-  font-size:14px;color:#f09;
+  font-size:20px;color:#f09;
   font-weight:500;
 	width:700px;height:auto;
 	overflow:hidden;
-	margin: 40px auto;
-	text-shadow: -1px 1px 0px rgba(0, 0, 0, 0.9);
+  margin: 40px auto;
+  text-shadow: -1px 1px 0px rgba(0, 0, 0, 0.9);
+}
+
+.content_container{
+  font-size:15px;color:#6f9;
+  font-weight:500;
+	width:700px;height:auto;
+	overflow:hidden;
+  margin: 40px auto;
+  text-shadow: -1px 1px 0px rgba(0, 0, 0, 0.9);
+}
+
+.side_container{
+  width: 150px;
+  max-width:150px;
+  min-width:150px;
+  margin: 0px auto;
+  overflow:hidden;
+  padding:30px;
+  background-color: #00f;
+  display: table-cell;
 }
 
 @-webkit-keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
