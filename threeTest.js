@@ -1,55 +1,78 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+var camera, scene, renderer;
+var mesh;
+init();
+animate();
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth/4, window.innerHeight/4 );
-document.body.appendChild( renderer.domElement );
+function init(){
 
-var geometry = new THREE.BoxGeometry( 20, 20, 20);
-var material = new THREE.MeshLambertMaterial( { color: 0xfd59d7 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+	var ASPECT_RATIO = window.innerWidth / window.innerHeight;
+	var AMOUNT = 1;
+	var WIDTH = ( window.innerWidth / AMOUNT ) * window.devicePixelRatio;
+  var HEIGHT = ( window.innerHeight / AMOUNT ) * window.devicePixelRatio;
+  
+  var cameras = [];
+  
+	for ( var y = 0; y < AMOUNT; y ++ ) {
+		for ( var x = 0; x < AMOUNT; x ++ ) {
+			var subcamera = new THREE.PerspectiveCamera( 40, ASPECT_RATIO, 0.1, 10 );
+			subcamera.viewport = new THREE.Vector4( Math.floor( x * WIDTH ), Math.floor( y * HEIGHT ), Math.ceil( WIDTH ), Math.ceil( HEIGHT ) );
+			subcamera.position.x = ( x / AMOUNT ) - 0.5;
+			subcamera.position.y = 0.5 - ( y / AMOUNT );
+			subcamera.position.z = 1.5;
+			subcamera.position.multiplyScalar( 4 );
+			subcamera.lookAt( 0, 0, 0 );
+			subcamera.updateMatrixWorld();
+			cameras.push( subcamera );
+		}
+  }
+  
+	camera = new THREE.ArrayCamera( cameras );
+  camera.position.z = 2;
+  
+	scene = new THREE.Scene();
+  scene.add( new THREE.AmbientLight( 0x222244 ) );
+  
+	var light = new THREE.DirectionalLight();
+	light.position.set( 0, 0.5, 1 );
+	light.castShadow = true;
+	light.shadow.camera.zoom = 4; // tighter shadow map
+  scene.add( light );
+  
+	var geometry = new THREE.PlaneBufferGeometry( 100, 100 );
+	var material = new THREE.MeshPhongMaterial( { color: 0x000000} );
+  
+  var background = new THREE.Mesh( geometry, material );
+	background.receiveShadow = true;
+	background.position.set( 0, 0, - 1 );
+  scene.add( background );
+  
+	var geometry = new THREE.CylinderBufferGeometry( 0.5,0.5,1.5,32);
+  var material = new THREE.MeshStandardMaterial( { color: 0xfff222, roughness: 0.9 } );
+  
+	mesh = new THREE.Mesh( geometry, material );
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
+  scene.add( mesh );
+  
+	renderer = new THREE.WebGLRenderer();
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.shadowMap.enabled = true;
+  
+	document.body.appendChild( renderer.domElement );
+	//
+	window.addEventListener( 'resize', onWindowResize, false );
+}
 
-camera.position.z = 100;
+function onWindowResize(){
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
 
-var light = new THREE.PointLight( 0xFFFF00 );
-light.position.set( 10, 0, 25 );
-scene.add( light );
-
-
-
-var render = function () {
-  requestAnimationFrame( render );
-
-  cube.rotation.x += 0.1;
-  cube.rotation.y += 0.1;
-  camera.updateProjectionMatrix();
-
-  renderer.render(scene, camera);
-};
-
-render();
-
-// dat gui
-var gui = new dat.GUI();
-var cameraGui = gui.addFolder("camera position");
-cameraGui.add(camera.position, 'x');
-cameraGui.add(camera.position, 'y');
-cameraGui.add(camera.position, 'z');
-cameraGui.open();
-
-var cameraGui = gui.addFolder("camera projection");
-cameraGui.add(camera, "fov");
-cameraGui.open();
-
-var lightGui = gui.addFolder("light position");
-lightGui.add(light.position, 'x');
-lightGui.add(light.position, 'y');
-lightGui.add(light.position, 'z');
-lightGui.open();
-
-var cubeGui = gui.addFolder("cube position");
-cubeGui.add(cube.position, 'x');
-cubeGui.add(cube.position, 'y');
-cubeGui.add(cube.position, 'z');
-cubeGui.open();
+function animate(){
+	mesh.rotation.x += 0.005;
+	mesh.rotation.z += 0.01;
+	renderer.render( scene, camera );
+	requestAnimationFrame( animate );
+}

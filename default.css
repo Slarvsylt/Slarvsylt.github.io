@@ -1,32 +1,61 @@
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  font-size: 15px;
-  overflow-x: hidden;
-  min-height: 100%;
+	font-family: 'Playfair Display', serif;
+	background-color:#fffe6e;
+	width:100%;margin:0px;height:auto;
+	cursor:default;overflow-y:auto;
 }
 
-html {
+#info {
   position: relative;
-  min-height: 100%;
-}
-
-span {
-  text-align: center;
-  width: 40%;
-  display: block;
-}
-
-h1 {
-  padding: 30px;
+  padding: 10px;
+  width: 100%;
   text-align: center;
 }
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+a:link {color:#00f;cursor:pointer;}
+a:visited {color:#f0f;}
+a:hover {cursor:pointer;-webkit-animation: rt1 0.2s infinite alternate;-moz-animation: rt1 0.2s infinite alternate;animation: rt1 0.2s infinite alternate;}
+a:active {color:#fff;}
 
 canvas {
   width: 100%;
   height: 100%;
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/space-texture.jpg');
+  background-size: 500px;
+}
+
+.main_cointainer{
+  width:760px;
+  max-width:760px;
+  min-width:760px;
+	padding:30px;
+	margin: 0px auto;
+	overflow:hidden;
+}
+
+.intro_container{
+  font-size:14px;color:#f09;
+  font-weight:500;
+	width:700px;height:auto;
+	overflow:hidden;
+	margin: 40px auto;
+	text-shadow: -1px 1px 0px rgba(0, 0, 0, 0.9);
+}
+
+@-webkit-keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
+@-moz-keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
+@keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
+
+.cool {
+  -webkit-animation: rt1 0.2s infinite alternate;
+  -moz-animation: rt1 0.2s infinite alternate;
+  animation: rt1 0.2s infinite alternate;
+  cursor: default;
 }
 
 .imageClass {
