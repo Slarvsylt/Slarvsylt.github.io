@@ -1,6 +1,6 @@
 body {
 	font-family: 'Playfair Display', serif;
-	background-color:#ccc;
+	background-color:#fffe6e;
 	width:100%;margin:0px;height:auto;
 	cursor:default;overflow-y:auto;
 }
@@ -17,15 +17,10 @@ a {
   cursor: pointer;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-h1 {
-  padding: 30px;
-  text-align: center;
-}
+a:link {color:#00f;cursor:pointer;}
+a:visited {color:#f0f;}
+a:hover {cursor:pointer;-webkit-animation: rt1 0.2s infinite alternate;-moz-animation: rt1 0.2s infinite alternate;animation: rt1 0.2s infinite alternate;}
+a:active {color:#fff;}
 
 canvas {
   width: 100%;
@@ -41,7 +36,6 @@ canvas {
 	padding:30px;
 	margin: 0px auto;
 	overflow:hidden;
-	border:thin solid #666;
 }
 
 .intro_container{
@@ -56,12 +50,6 @@ canvas {
 @-webkit-keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
 @-moz-keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
 @keyframes rt1 {0% {color: hsl(354, 100%, 70%);} 15% {color: hsl(300, 100%, 70%);} 30% {color: hsl(255, 100%, 70%);} 45% {color: hsl(212, 100%, 70%);} 60% {color: hsl(172, 100%, 70%);} 75% {color: hsl(130, 100%, 70%);} 90% {color: hsl(55, 100%, 70%);} 100% {color: hsl(21, 100%, 70%);}}
-
-a:link {color:#fff;cursor:pointer;}
-a:visited {color:#fff;}
-a:hover {cursor:pointer;-webkit-animation: rt1 0.2s infinite alternate;-moz-animation: rt1 0.2s infinite alternate;animation: rt1 0.2s infinite alternate;}
-a:active {color:#fff;}
-
 
 .cool {
   -webkit-animation: rt1 0.2s infinite alternate;
