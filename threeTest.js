@@ -1,33 +1,55 @@
 var scene = new THREE.Scene();
-scene.background = new THREE.Color( 0xf0f0f0 );
-
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
 var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.getElementById("myScene").appendChild( renderer.domElement );
+renderer.setSize( window.innerWidth/4, window.innerHeight/4 );
+document.body.appendChild( renderer.domElement );
 
-var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+var geometry = new THREE.BoxGeometry( 20, 20, 20);
+var material = new THREE.MeshLambertMaterial( { color: 0xfd59d7 } );
 var cube = new THREE.Mesh( geometry, material );
-//cube.position.x = 100;
-//cube.translateX = 100;
-//three.cube.position.x = 100;
 scene.add( cube );
 
-camera.position.z = 10;    
-camera.position.x = 10;
+camera.position.z = 100;
 
-var geometry_2 = new THREE.BoxGeometry( 2, 2, 2 );
-var material_2 = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-var cube_2 = new THREE.Mesh( geometry_2, material_2 );
-scene.add( cube_2 );
+var light = new THREE.PointLight( 0xFFFF00 );
+light.position.set( 10, 0, 25 );
+scene.add( light );
 
 
-function animate() {
-requestAnimationFrame( animate );
-cube.rotation.y += 0.01;
-cube_2.position.x += 0.05;
-renderer.render( scene, camera );
-}
-animate();
+
+var render = function () {
+  requestAnimationFrame( render );
+
+  cube.rotation.x += 0.1;
+  cube.rotation.y += 0.1;
+  camera.updateProjectionMatrix();
+
+  renderer.render(scene, camera);
+};
+
+render();
+
+// dat gui
+var gui = new dat.GUI();
+var cameraGui = gui.addFolder("camera position");
+cameraGui.add(camera.position, 'x');
+cameraGui.add(camera.position, 'y');
+cameraGui.add(camera.position, 'z');
+cameraGui.open();
+
+var cameraGui = gui.addFolder("camera projection");
+cameraGui.add(camera, "fov");
+cameraGui.open();
+
+var lightGui = gui.addFolder("light position");
+lightGui.add(light.position, 'x');
+lightGui.add(light.position, 'y');
+lightGui.add(light.position, 'z');
+lightGui.open();
+
+var cubeGui = gui.addFolder("cube position");
+cubeGui.add(cube.position, 'x');
+cubeGui.add(cube.position, 'y');
+cubeGui.add(cube.position, 'z');
+cubeGui.open();
