@@ -5,16 +5,33 @@ body {
 	cursor:default;overflow-y:auto;
 }
 
-#info {
-  position: relative;
-  padding: 10px;
+#wrapper {
+  display: inline-block;
   width: 100%;
-  text-align: center;
+  white-space: nowrap;
 }
 
-a {
-  text-decoration: underline;
-  cursor: pointer;
+#sidebar {
+  display: inline-block;
+  position: sticky;
+  top: 120px;
+  left: 60%;
+  vertical-align: top;
+  background-color: #1ff;
+  border: 1px solid black;
+  text-align: left;
+  padding: 15px 15px 15px 15px;
+  margin: 0px 20px 20px 20px;
+}
+
+.centerx,.centery,.centerxy{
+	position:absolute;
+}
+
+.rel {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 a:link {color:#00f;cursor:pointer;}
@@ -56,13 +73,39 @@ canvas {
 }
 
 .content_container{
-  font-size:15px;color:#6f9;
-  font-weight:500;
-	width:700px;height:auto;
-	overflow:hidden;
-  margin: 40px auto;
-  text-shadow: -1px 1px 0px rgba(0, 0, 0, 0.9);
+  width:700px;height:270px;
+  margin: 60px auto;
 }
+
+.content_headline {
+  font-size:23px;line-height:30px;font-weight:700;
+	text-decoration: underline;
+	text-decoration-color: #f09;
+	color:#f09;
+	cursor:pointer;
+	position:absolute;
+	z-index:500000;
+	width:300px;
+  text-shadow: -1.5px 1.5px 0px rgba(0, 0, 0, 0.9);
+}	
+
+.content_headline:hover{
+  text-shadow: -2px 2px 0px rgba(0, 0, 0, 1);
+  -webkit-animation: rt1 0.2s infinite alternate;-moz-animation: rt1 0.2s infinite alternate;animation: rt1 0.2s infinite alternate;
+}
+.content_tags{
+  font-family: 'Alegreya Sans SC', sans-serif;
+  font-size:11px;color:#f09;font-weight:300;
+  width:700px;height:auto;
+  position:absolute;top:250px;left:0px;
+  z-index:5;
+}
+.content_image_box{
+  width:auto;height:250px;
+  position:absolute;top:0px;left:0px;
+  z-index:1;
+}
+
 
 .side_container{
   width: 150px;
