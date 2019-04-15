@@ -123,6 +123,7 @@ canvas {
   -moz-animation: rt1 0.2s infinite alternate;
   animation: rt1 0.2s infinite alternate;
   cursor: default;
+  position: relative;
 }
 
 .imageClass {
