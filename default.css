@@ -2,7 +2,7 @@ body {
 	font-family: 'Playfair Display', serif;
 	background-color:#ffffd6;
 	width:100%;margin:0px;height:auto;
-	cursor:default;overflow-y:auto;
+  cursor:default;overflow-y:auto;
 }
 
 #wrapper {
@@ -12,16 +12,13 @@ body {
 }
 
 #sidebar {
-  display: inline-block;
   position: sticky;
-  top: 120px;
-  left: 60%;
+  width: 98%;
+  top: 0px;
   vertical-align: top;
   background-color: #1ff;
-  border: 1px solid black;
-  text-align: left;
+  text-align: center;
   padding: 15px 15px 15px 15px;
-  margin: 0px 20px 20px 20px;
 }
 
 .centerx,.centery,.centerxy{
@@ -55,7 +52,6 @@ canvas {
 
 .main_cointainer{
   width: 60%;
-  padding:15px 50px;
   margin: auto;
   margin-left:auto; 
   margin-right:auto;
