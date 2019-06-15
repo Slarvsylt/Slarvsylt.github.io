@@ -1,106 +1,108 @@
-var container;
-var camera;
-var scene;
-var scene2;
-var water;
-var renderer;
-var controls;
-var container;
-var grid;
-var floor;
-var clock;
-var stats;
-var raycaster;
-var spotlight;
-var hlight,alight,plight1,plight2,plight3;
-var fog;
-
-var SETTINGS_ENVIRONMENT = {
-	fog_near: 1,
-	fog_far: 200,
+var scene, camera, clock, renderer, water;
+var torusKnot;
+var params = {
+	color: '#ffffff',
+	scale: 4,
+	flowX: 1,
+	flowY: 1
 };
 
-function setup_environment_clouds(){
+init();
+animate();
 
-
-	scene = new THREE.Scene();
-
-	camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    container = document.getElementById( 'canvas' );
-	renderer = new THREE.WebGLRenderer( {canvas: container, antialias: true, alpha:true } );
-	renderer.autoClear = false;
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.setClearColor( 0x000000, 0 ); // the default
-	
-
-}
-
-function create_clouds(){
-
-    geometry = new THREE.Geometry();
-
-    var texture = THREE.ImageUtils.loadTexture( '../cloud.png' );
-    texture.magFilter = THREE.LinearMipMapLinearFilter;
-    texture.minFilter = THREE.LinearMipMapLinearFilter;
-
-    var fog = new THREE.Fog( 0x4584b4, - 100, 3000 );
-
-    material = new THREE.ShaderMaterial( {
-
-        uniforms: {
-
-            "map": { type: "t", value: texture },
-            "fogColor" : { type: "c", value: fog.color },
-            "fogNear" : { type: "f", value: fog.near },
-            "fogFar" : { type: "f", value: fog.far },
-
-        },
-        vertexShader: document.getElementById( 'vs' ).textContent,
-        fragmentShader: document.getElementById( 'fs' ).textContent,
-        depthWrite: false,
-        depthTest: false,
-        transparent: true
-
-    } );
-
-    var plane = new THREE.Mesh( new THREE.PlaneGeometry( 64, 64 ) );
-
-    for ( var i = 0; i < 8000; i++ ) {
-
-        plane.position.x = Math.random() * 1000 - 500;
-        plane.position.y = - Math.random() * Math.random() * 200 - 15;
-        plane.position.z = i;
-        plane.rotation.z = Math.random() * Math.PI;
-        plane.scale.x = plane.scale.y = Math.random() * Math.random() * 1.5 + 0.5;
-        THREE.GeometryUtils.merge( geometry, plane );
-
-    }
-    mesh = new THREE.Mesh( geometry, material );
-    scene.add( mesh );
-
-    load_counter();
-
-}
-
-function init(){
+function init() {
     scene = new THREE.Scene();
+    
+    camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight, 0.1, 1000);
 
-    
-	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
-	camera.position.set( - 15, 7, 15 );
+    camera.position.set( - 15, 7, 15 );
     camera.lookAt( scene.position );
+
+    clock = new THREE.Clock();
+
+    var torusKnotGeometry = new THREE.TorusKnotBufferGeometry( 3, 1, 256, 32 );
+    var torusKnotMaterial = new THREE.MeshNormalMaterial();
+    torusKnot = new THREE.Mesh( torusKnotGeometry, torusKnotMaterial );
+    torusKnot.position.y = 4;
+    torusKnot.scale.set( 0.5, 0.5, 0.5 );
+    scene.add( torusKnot );
+
+
+    var groundGeometry = new THREE.PlaneBufferGeometry( 20, 20 );
+	var groundMaterial = new THREE.MeshStandardMaterial( { roughness: 0.8, metalness: 0.4 } );
+	var ground = new THREE.Mesh( groundGeometry, groundMaterial );
+	ground.rotation.x = Math.PI * - 0.5;
+    scene.add( ground );
     
-    var waterGeometry = new THREE.PlaneBufferGeometry( 100, 100 );
+	var textureLoader = new THREE.TextureLoader();
+	textureLoader.load( "F:\Users\jespe_000\Documents\GitHub\Slarvsylt.github.io\pics\yokoFace.jpg", function ( map ) {
+		map.wrapS = THREE.RepeatWrapping;
+		map.wrapT = THREE.RepeatWrapping;
+		map.anisotropy = 16;
+		map.repeat.set( 4, 4 );
+		groundMaterial.map = map;
+		groundMaterial.needsUpdate = true;
+    } );
+    
+    var waterGeometry = new THREE.PlaneBufferGeometry( 20, 20 );
 	water = new THREE.Water( waterGeometry, {
-		color: 0xb5e9f4,
-		scale: 1,
-		flowDirection: new THREE.Vector2( 1, 0 ),
-		textureWidth: 512,
-		textureHeight: 512
-	} );
+		color: params.color,
+		scale: params.scale,
+		flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
+		textureWidth: 1024,
+		textureHeight: 1024
+    } );
+            
 	water.position.y = 1;
 	water.rotation.x = Math.PI * - 0.5;
-    scene.add( water );    	
+    scene.add( water );
+    
+    var cubeTextureLoader = new THREE.CubeTextureLoader();
 
+    cubeTextureLoader.setPath( "F:\Users\jespe_000\Documents\GitHub\Slarvsylt.github.io\pics\cube" );
+    var cubeTexture = cubeTextureLoader.load( [
+        'px.jpg', 'nx.jpg',
+        'py.jpg', 'ny.jpg',
+        'pz.jpg', 'nz.jpg',
+    ] );
+
+    var cubeShader = THREE.ShaderLib[ 'cube' ];
+    cubeShader.uniforms[ 'tCube' ].value = cubeTexture;
+
+    var skyBoxMaterial = new THREE.ShaderMaterial( {
+        fragmentShader: cubeShader.fragmentShader,
+        vertexShader: cubeShader.vertexShader,
+        uniforms: cubeShader.uniforms,
+        side: THREE.BackSide
+    } );
+
+    var skyBox = new THREE.Mesh( new THREE.BoxBufferGeometry( 1000, 1000, 1000 ), skyBoxMaterial );
+    scene.add( skyBox );
+
+    
+	var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+    scene.add( ambientLight );
+    
+	var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.6 );
+	directionalLight.position.set( - 1, 1, 1 );
+	scene.add( directionalLight );
+		
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.setPixelRatio( window.devicePixelRatio );
+    document.body.appendChild( renderer.domElement );
+    
+    var controls = new THREE.OrbitControls( camera, renderer.domElement );
+}
+
+function animate() {
+    requestAnimationFrame( animate );
+    render();
+}
+
+function render() {
+    var delta = clock.getDelta();
+    torusKnot.rotation.x += delta;
+    torusKnot.rotation.y += delta * 0.5;
+    renderer.render( scene, camera );
 }
