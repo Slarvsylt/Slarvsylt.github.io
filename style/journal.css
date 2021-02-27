@@ -1,0 +1,51 @@
+
+.journal-panel {
+	height:100%; 
+	width:100%;
+	position: relative; 
+	font-family: PIXEARG;
+	display: inline-block;
+	box-sizing: border-box; 
+	background-image: url("../chatTextures/vidBox.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%; 
+	background-color: black;
+	padding-top: 45px; 
+	padding-bottom:20px; 
+	padding-left: 15px; 
+	padding-right: 15px;
+}
+.journal-writing-panel {
+	box-sizing: border-box; 
+	height: 90%;
+	width: 100%;
+}
+.journal-entry-panel {
+	box-sizing: border-box; 
+	height:90%; 
+	width:100%; 
+}
+.journal-button-panel {
+	box-sizing: border-box; 
+	height:10%;
+	width:100%;
+}
+.journal-input {
+	box-sizing: border-box;
+	width:100%;
+	height:100%;
+	resize:none; 
+	background-color:rgba(0,0,0,0); 
+	border-style: none;
+	overflow-y: scroll; 
+	overflow-x: hidden; 
+	outline: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none; 
+	box-sizing: border-box;
+	font-family: PIXEARG;
+	font-size: 1em;
+
+	color:white; 
+}

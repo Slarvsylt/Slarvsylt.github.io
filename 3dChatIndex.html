@@ -1,0 +1,205 @@
+
+<!doctype html>
+<html>
+
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113150676-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-113150676-1');
+	</script>
+	
+	<meta charset="ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="description" content="Free online wizard simulation.">
+	<meta name="keywords" content="wiz mud,wizmud,wizzone,wizard,mmo,mmorpg,role play,wiz net,wiz zone">
+	<meta name="author" content="Virtual Buddies">
+
+	<title>WIZ MUD</title>
+
+	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="style/loadingScreen.css">
+	<link rel="stylesheet" href="style/vidModal.css">
+	<link rel="stylesheet" href="style/journal.css">
+
+	<link id="favicon" rel="shortcut icon" href="favicon.ico" />
+
+	<link rel="preload" href="chatTextures/playersBorder.png" as="image">
+	<link rel="preload" href="chatTextures/vidBox.png" as="image">
+
+	<script src="scripts/UnityProgress.js"></script>
+	<!--<script src="Build/UnityLoader.js"></script> --> 
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/WebGLBuild.json", {onProgress: UpdateLoadingBar});
+    </script>
+</head>
+
+<body>
+	<div class="wrapper main-box">
+		<div class="wrapper sixty">
+			<div class="game aspect-ratio"></div>
+			<div class="content game-panel">
+				<div id="gameContainer" tabindex="0" onclick="chatInput.focus();" style="height:100%; width:100%; outline: none;"></div>
+					<div id="loadingBg">
+						<div id="loadingBox">
+						<div id="bgBar"></div>
+						<div id="progressBar"></div>
+						<p id="loadingInfo">Loading...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrapper forty">
+			<div class="chat aspect-ratio"></div>
+			<div id="chatPanel" class="content chat-panel">
+				<table class="chat-header">
+					<tr>
+						<td>
+							<button id="chatButton" class="chat-button header-button" onclick="onChatButtonClick();">
+					      	</button>
+						</td>
+						<td class="header-spacer">
+						</td>
+						<td>
+							<button id="playerButton" class="player-button header-button" onclick="onPlayerButtonClick();">
+					      	</button>
+						</td>
+			      	</tr>
+		      	</table>
+		      	<div id="chatTab" class="chat-panel-tab">
+					<div id="chatBox" class="chat-box"></div>
+			        <div id="cliBox" class="chat-box" style="display: none;"></div>
+    			</div>
+    			<div id="playerTab" class="chat-panel-tab player-box">
+    				<table id="playerTable" class="player-table">
+    					<tbody id="playerTableBody"></tbody>
+    				</table>
+    			</div>
+    			<div class="bottom-panel">
+	    			<div class="chat-input-wrapper">
+	    				<textarea id="chatInput" class="chat-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+	    			</div>
+    			</div>
+			</div>
+		</div>
+	</div>
+	<div id="vidModal" class="vid-modal">
+		<div class="draggable-panel" style="height:450px; width: 600px">
+			<div class="modal-drag-area" style="left: 0px; top: 0px; width:600px; height:60px;">
+				<span class="close" onclick="closeVideoUI()" class="modal-close-button" style="top:0px; right:5px; width:50px; height:50px;"></span>
+			</div>
+			<div id="vidPanel" class="vid-panel"  style="height:100%; width:100%;" >
+
+				<div class="tab">
+					<button id="nowPlayingTabButton" class="tablinks" onclick="openTab(event, 'nowPlayingTab')">Now Playing</button>
+					<button id="queueTabButton" class="tablinks" onclick="openTab(event, 'queueTab')">Queue</button>
+					<button id="addVidTabButton" class="tablinks" onclick="openTab(event, 'addVidTab')">Add Video</button>
+				</div>
+				<div id="nowPlayingTab" class="tabcontent">
+					<table>
+						<tr>
+							<td>
+								<image id="nowPlayingThumbnail"></image>
+							</td>
+							<td style="padding:0px 15px;vertical-align: top; ">
+								<table>
+									<tr>
+										<td colspan="2"><button id="voteToSkipButton" onclick="requestStartSkipVote();">Vote to skip</button></td>
+									</tr>
+									<tr style="text-align:left; width:auto">
+										<td style="width:50%"><button style="width:100%" id="upVoteButton" onclick="requestUpVoteSkip();" disabled="true">Keep</button></td>
+										<td style="width:50%; text-align-last: center;" id="upVoteCount">0</td>
+									</tr>
+									<tr>
+										<td style="width:50%" ><button style="width:100%" id="downVoteButton" onclick="requestDownVoteSkip();" disabled="true">Skip</button></td>
+										<td style="width:50%; text-align-last: center;"  id="downVoteCount">0</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td id="nowPlayingTitle">
+								The title of the current vid
+							</td>
+							<td id="nowPlayingUsername" style="padding:15px 15px;">
+								Added by peetle
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" id="nowPlayingTime">
+								|###-------|  elapsed: 2:53 remaining: 1:20
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="queueTab" class="tabcontent">
+					<div id="queueContainer" class="vid-list">
+						<table id="queueTable">
+						</table>
+					</div>
+				</div>
+				<div id="addVidTab" class="tabcontent">
+					<div id="searchPanel" class="search-panel">
+						<form name="message" onsubmit="onSubmitSearch();return false;">
+							<label>Search
+								<input type="text" class="vid-search-input" id="searchInput" autocomplete="off">
+							</label>
+						</form>
+					</div>
+					<div id="videoContainer" class="vid-list">
+						<table id="videoList">
+						</table>
+						<button type="button" id="prevVideoPageButton" onclick="prevPage()">prev</button>
+						<button type="button" id="nextVideoPageButton" onclick="nextPage()">next</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="journalModal" class="vid-modal">
+		<div class="draggable-panel" style="height:450px; width: 600px">
+			<div class="modal-drag-area" style="left: 0px; top: 0px; width:600px; height:60px;">
+				<span class="close" onclick="closeJournalUI()" style="top:0px; right:5px; width:50px; height:50px;"></span>
+			</div>
+			<div class="journal-panel">
+				<div id="journalEntryPanel" class="journal-entry-panel">
+
+				</div>
+				<div id="journalWritingPanel" class="journal-writing-panel" style="display:none">
+					<textarea id="journalInput" class="journal-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+				</div>
+				<div class="journal-button-panel">
+				<button type="button" id="prevJournalPageButton" onclick="journalController.prevPage()">prev</button>
+				<button type="button" id="nextJournalPageButton" onclick="journalController.nextPage()">next</button>
+				<button type="button" id="journalSubmitButton" style="display:none" onclick="journalController.submit()">submit</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div class="wiz-mud" id="mobile-splash" style="display: none; color: white; font-size: 40;">
+    	WIZMUD does not run on mobile <|:(</br>
+    	Please use a computer. </br>
+    	Follow us on twitter for updates: <a href="https://twitter.com/wiz_mud">https://twitter.com/wiz_mud</a> </br>
+    	Or check out our Patreon: <a href="https://www.patreon.com/wizmud">https://www.patreon.com/wizmud</a></br>
+    	<img src="wizmudmobilesplash.gif" style="width:100%;">
+    </div>   --> 
+
+</body>
+<script src="scripts/modal.js"></script>
+<script src="scripts/vidController.js"></script>
+<script src="scripts/playerList.js"></script>
+<script src="scripts/chatController.js"></script>
+<script src="scripts/detectMobile.js"></script>
+<script src="scripts/journalController.js"></script>
+<script src="scripts/utils.js"></script>
+<script src="scripts/hls.js"></script>
+
+<script src="https://apis.google.com/js/client.js?onload=onClientLoad" type="text/javascript"></script>
+</html>

@@ -1,0 +1,139 @@
+.vid-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 0px; /* Full width */
+    height: 0px; /* Full height */
+     color: white;
+}
+.draggable-panel {
+  position:absolute; 
+}
+.modal-drag-area {
+  position: absolute; z-index: 2;
+}
+.modal-close-button {
+  
+}
+.close {
+    color: #aaa;
+    position: absolute;
+    font-size: 20px;
+    font-weight: bold;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.vid-panel { 
+  position: relative; 
+  font-family: PIXEARG;
+  display: inline-block;
+  box-sizing: border-box; 
+  background-image: url("../chatTextures/vidBox.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%; 
+  background-color: black;
+  padding-top: 45px; 
+  padding-bottom:20px; 
+  padding-left: 15px; 
+  padding-right: 15px;
+  height:100%;
+ 
+}
+.vid-list {
+  position:relative;
+  overflow-y: scroll; 
+  overflow-x: hidden; 
+  box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+  height:70%;width:100% ;
+  font-size: 1em;
+  word-wrap: break-word;
+  
+}
+.search-panel {
+  position:relative;
+  height:auto; width:100% ;
+  box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+}
+.vid-search-input { 
+  height:10%; width:70%; 
+  resize:none; 
+  background-color:rgba(0,0,0,0); 
+  border-style: solid;
+  border-width: 4px;
+  border-color: #303030;
+  overflow: hidden;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none; 
+  box-sizing: border-box;
+  font-family: PIXEARG;
+  font-size: 1em;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color:white; 
+}
+.clickable {
+  cursor: pointer;
+}
+.clickable:hover { 
+    background-color: grey;
+}
+.pointerhover {
+  cursor: pointer;
+}
+div.tab {
+    overflow: hidden;
+    width: auto;
+    height: auto;
+    color:white; 
+}
+
+/* Style the buttons inside the tab */
+div.tab button {
+    width:33%;
+}
+
+
+
+/* Style the tab content */
+.tabcontent {
+    position: relative;
+    display: none;
+    padding: 15px 15px;
+    height:100%;
+}
+
+button {
+  background-color: grey;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font:inherit;
+  color:white; 
+  border: 3px outset #333333;
+}
+
+/* Create an active/current tablink class */
+button.active {
+    background-color: #333333;
+}
+button:focus {
+    background-color: #333333;
+}
+
+button:disabled {
+  background-color: #333333;
+  color:grey;
+}

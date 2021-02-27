@@ -1,0 +1,196 @@
+@font-face{
+    font-family: PIXEARG;
+    src: url(../PIXEARG_.TTF);
+  
+  }
+  
+   html,div,canvas { margin: 0; padding: 0; width: 100%; }
+   ::-moz-selection { color: #333; text-shadow: none; }
+   ::selection {  color: #333; text-shadow: none; }
+   .clear:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+   .clear { display: inline-table; clear: both; }
+   /* Hides from IE-mac \*/ * html .clear { height: 1%; } .clear { display: block; } /* End hide from IE-mac */
+  
+   body {
+    width: 100%; 
+    margin:0;
+    padding:8px;
+    background: black;
+    box-sizing: border-box;
+    font-family: PIXEARG;
+    font-size: 20;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    color:white;
+   }
+  
+  .wrapper {
+    position: relative;
+    width: 100%; /* <-- just a default, can be anything. */
+  }
+  
+  .game.aspect-ratio { padding-bottom: 75% }
+  .chat.aspect-ratio { padding-bottom: 112.5% }
+  
+  .content {
+      position: absolute;
+      top: 0;  bottom: 0;  left: 0;  right: 0;
+  }
+  
+  .sixty {
+    width: 60%;
+    float: left;
+  }
+  
+  .forty {
+    width: 40%;
+    float: left;
+  }
+  
+  .main-box {
+    width: 100%;
+  
+  }
+  
+  .game-panel {
+  }
+  
+  .chat-panel {
+    background-color: black;
+    background-image: url("../chatTextures/chatBorder.png");
+    background-size: 100% 100%;
+    
+    padding-top: 5.5%;
+    padding-bottom: 2.1%;
+    padding-right: 3%;
+    padding-left: 3%;
+    box-sizing: border-box;
+  }
+  
+  .chat-header {
+    position: absolute;
+    margin-top: -5.7%;
+    margin-left: -3%;
+    height: 5%;
+    width: 13%;
+    padding: 0px;
+    border-collapse: collapse;
+  }
+  
+  .header-button {
+    background-size: 100% 100%;
+    padding: 0px;
+    margin:0px;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  .header-spacer {
+    width:2px;
+    height:100%;
+  }
+  
+  .chat-button {
+    background-image: url("../chatTextures/chatButton.png");
+  }
+  .chat-button:disabled {
+    background-image: url("../chatTextures/chatButtonDisabled.png");
+  }
+  
+  .player-button {
+    background-image: url("../chatTextures/playerButton.png");
+  }
+  .player-button:disabled {
+    background-image: url("../chatTextures/playerButtonDisabled.png");
+  }
+  
+  .chat-panel-tab {
+    box-sizing: border-box;
+    height:85%; width:100%;
+    padding-right: 0%;
+    padding-left: 2%;
+  }
+  
+  .chat-box {  
+    box-sizing: border-box;
+  
+    height:100%; width:100%;
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+    margin:0;
+    
+    font-size: 1em;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  
+  .player-box {
+    box-sizing: border-box;
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+    
+    font-size: 1em;
+    word-wrap: break-word;
+  }
+  
+  .player-table {
+    width:100%;
+  }
+  
+  .chat-input-wrapper {
+    height:100%; width:100%; 
+    padding:2.5%;
+    background-image: url("../chatTextures/inputBorder.png");
+    background-size: 100% 100%;
+    box-sizing: border-box;
+  }
+  
+  .bottom-panel {
+    height:15%; width:100%; 
+    margin:0;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 1.5%;
+    box-sizing: border-box;
+  }
+  
+  .chat-input { 
+    box-sizing: border-box;
+    width:100%;
+    height:100%;
+    resize:none; 
+    background-color:rgba(0,0,0,0); 
+    border-style: none;
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none; 
+    box-sizing: border-box;
+    font-family: PIXEARG;
+    font-size: 1em;
+    
+    color:white; 
+  }
+  
+  
+  /* Let's get this party started */
+  ::-webkit-scrollbar {
+      width: 15px;
+      height:90%;
+  }
+   
+  /* Track */
+  ::-webkit-scrollbar-track {
+      -webkit-box-shadow: rgba(0,0,0,1); 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+      background: url('../scrollBar.png');
+  }
+  
+  

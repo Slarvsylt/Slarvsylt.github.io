@@ -1,0 +1,49 @@
+div#loadingBg {
+    background-image: url("../progresslogo.png");
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+    font-family: 'Lucida Console', 'Lucida Sans Typewriter', monaco, 'Bitstream Vera Sans Mono', monospace;
+  }
+  div#loadingBox {
+    width: 100%;
+    height: 20px;
+    position: absolute;
+    top: 80%;
+    margin-top: -10px;
+    text-align: center;
+  }
+  div#bgBar {
+    position: absolute;
+    width: 200px;
+    margin-left: -100px;
+    left: 50%;
+    height: 4px;
+    display: block;
+    background-color: #333;
+  }
+  div#progressBar {
+    left: 50%;
+    position: absolute;
+    margin-left: -100px;
+    width: 0px;
+    height: 4px;
+    background-color: white;
+    border-radius: 0px;
+  }
+  div#bgBar {
+    border-radius: 0px;
+  }
+  p#loadingInfo {
+    color: #666;
+    letter-spacing: 1px;
+    position: absolute;
+    width: 100%;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 12px;
+    margin-top: 10px;
+  }
