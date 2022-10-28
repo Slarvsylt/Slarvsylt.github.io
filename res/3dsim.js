@@ -1,11 +1,11 @@
-import * as THREE from 'three';
-//import * as THREE from '../../build/three.module.js';
+//import * as THREE from 'three';
+import * as THREE from '../node_modules/three/build/three.module.js';
 
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { CubeTextureLoader } from '../node_modules/three/src/loaders/CubeTextureLoader.js';
 
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-import Stats from 'three/addons/libs/stats.module.js';
+import { GUI } from '../node_modules/three/examples/jsm/libs/lil-gui.module.min.js';
+import Stats from '../node_modules/three/examples/jsm/libs/stats.module.js';
 
 let camera, scene, renderer, stats;
 let cube, sphere, torus, material;
@@ -36,59 +36,26 @@ function init() {
     scene = new THREE.Scene();
     scene.rotation.y = 0.5; // avoid flying objects occluding the sun
 
-    new RGBELoader()
-        .setPath( 'pics/cube/' )
+    /*new CubeTextureLoader()
+        .setPath( '../pics/cube/' )
         .load( [
-            'px.png',
-            'nx.png',
-            'py.png',
-            'ny.png',
-            'pz.png',
-            'nz.png'
-        ] , function ( texture ) {
+            'px.jpg',
+            'nx.jpg',
+            'py.jpg',
+            'ny.jpg',
+            'pz.jpg',
+            'nz.jpg'
+        ], function ( texture ) {
 
             texture.mapping = THREE.EquirectangularReflectionMapping;
 
             scene.background = texture;
             scene.environment = texture;
 
-        } );    
+        } );    **/
 
     //
-
-    cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
-    cubeRenderTarget.texture.type = THREE.HalfFloatType;
-
-    cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
-
-    //
-
-    material = new THREE.MeshStandardMaterial( {
-        envMap: cubeRenderTarget.texture,
-        roughness: 0.05,
-        metalness: 1
-    } );
-
-    const gui = new GUI();
-    gui.add( material, 'roughness', 0, 1 );
-    gui.add( material, 'metalness', 0, 1 );
-    gui.add( renderer, 'toneMappingExposure', 0, 2 ).name( 'exposure' );
-
-    sphere = new THREE.Mesh( new THREE.IcosahedronGeometry( 15, 8 ), material );
-    scene.add( sphere );
-
-    const material2 = new THREE.MeshStandardMaterial( {
-        roughness: 0.1,
-        metalness: 0
-    } );
-
-    cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material2 );
-    scene.add( cube );
-
-    torus = new THREE.Mesh( new THREE.TorusKnotGeometry( 8, 3, 128, 16 ), material2 );
-    scene.add( torus );
-
-    //
+    scene.background = new THREE.Color(0xff0000);
 
     controls = new OrbitControls( camera, renderer.domElement );
     controls.autoRotate = true;
