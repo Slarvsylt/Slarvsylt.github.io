@@ -15,6 +15,7 @@ let cubeCamera, cubeRenderTarget;
 let controls;
 
 init();
+//animate();
 
 function init() {
 
@@ -23,7 +24,7 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    document.body.appendChild( renderer.domElement );
+    renderer.setAnimationLoop( animation );
 
     window.addEventListener( 'resize', onWindowResized );
 
@@ -36,29 +37,30 @@ function init() {
     scene = new THREE.Scene();
     scene.rotation.y = 0.5; // avoid flying objects occluding the sun
 
-    /*new CubeTextureLoader()
+    scene.background = new CubeTextureLoader()
         .setPath( '../pics/cube/' )
-        .load( [
+        .load([
             'px.jpg',
             'nx.jpg',
             'py.jpg',
             'ny.jpg',
             'pz.jpg',
             'nz.jpg'
-        ], function ( texture ) {
+        ]);  
 
-            texture.mapping = THREE.EquirectangularReflectionMapping;
 
-            scene.background = texture;
-            scene.environment = texture;
+    var material = new THREE.MeshBasicMaterial( { color: "#433F81" } );
+    cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material );
+    scene.add( cube );
 
-        } );    **/
-
+    torus = new THREE.Mesh( new THREE.SphereGeometry(15), material );
+    scene.add( torus );
     //
-    scene.background = new THREE.Color(0xff0000);
+    //scene.background = new THREE.Color(0xff0000);
+    document.body.appendChild( renderer.domElement );
 
-    controls = new OrbitControls( camera, renderer.domElement );
-    controls.autoRotate = true;
+   controls = new OrbitControls( camera, renderer.domElement );
+   controls.autoRotate = true;
 
 }
 
@@ -66,7 +68,30 @@ function onWindowResized() {
 
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    //camera.aspect = window.innerWidth / window.innerHeight;
+    //camera.updateProjectionMatrix();
+
+}
+
+function animation(msTime) {
+
+    const time = msTime / 1000;
+
+    cube.position.x = Math.cos( time ) * 30;
+    cube.position.y = Math.sin( time ) * 30;
+    cube.position.z = Math.sin( time ) * 30;
+
+    cube.rotation.x += 0.02;
+    cube.rotation.y += 0.03;
+
+    torus.position.x = Math.cos( time + 10 ) * 30;
+    torus.position.y = Math.sin( time + 10 ) * 30;
+    torus.position.z = Math.sin( time + 10 ) * 30;
+
+    torus.rotation.x += 0.02;
+    torus.rotation.y += 0.03;
+
+    renderer.render( scene, camera );
+    controls.update();
 
 }
