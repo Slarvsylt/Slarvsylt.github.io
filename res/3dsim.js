@@ -1,14 +1,18 @@
 //import * as THREE from 'three';
-import * as THREE from '../node_modules/three/build/three.module.js';
+/*import * as THREE from '../node_modules/three/build/three.module.js';
 
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
 import { CubeTextureLoader } from '../node_modules/three/src/loaders/CubeTextureLoader.js';
+import Stats from '../node_modules/three/examples/jsm/libs/stats.module.js';**/
 
-import { GUI } from '../node_modules/three/examples/jsm/libs/lil-gui.module.min.js';
-import Stats from '../node_modules/three/examples/jsm/libs/stats.module.js';
+import * as THREE from 'three';
+
+import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
+import { CubeTextureLoader } from 'https://unpkg.com/three@0.146.0/src/loaders/CubeTextureLoader.js';
+import Stats from 'https://unpkg.com/three@0.146.0/examples/jsm/libs/stats.module.js';
 
 let camera, scene, renderer, stats;
-let cube, sphere, torus, material;
+let cube, cube2, sphere, torus, material;
 
 let controls;
 
@@ -29,7 +33,7 @@ function init() {
     stats = new Stats();
     document.body.appendChild( stats.dom );
 
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 5000 );
     camera.position.z = 75;
 
     scene = new THREE.Scene();
@@ -46,23 +50,32 @@ function init() {
             'nz.jpg'
         ]);  
 
-
+    {
+        const color = 0x96a6b5;
+        const density = 0.002;
+        scene.fog = new THREE.FogExp2(color, density);
+    }
     var material = new THREE.MeshPhongMaterial();
     material.color.setHSL(1, 1, .75);
     cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material );
     scene.add( cube );
 
-    torus = new THREE.Mesh( new THREE.SphereGeometry(15), material );
+    torus = new THREE.Mesh( new THREE.SphereGeometry(5), material );
     scene.add( torus );
+
+
+    cube2 = new THREE.Mesh( new THREE.BoxGeometry( 15, 900, 15 ), material );
+    scene.add( cube2 );
+    
     //
     //scene.background = new THREE.Color(0xff0000);
     document.body.appendChild( renderer.domElement );
 
    controls = new OrbitControls( camera, renderer.domElement );
-   //controls.autoRotate = true;
+   controls.autoRotate = true;
 
    const skyColor = 0xedf3ff;  // light blue
-   const groundColor = 0xe6e6e6;  // brownish orange
+   const groundColor = 0xe6e6e6;  //  grey
    const intensity = 0.25;
    const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
    scene.add(light);
