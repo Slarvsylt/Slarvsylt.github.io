@@ -10,8 +10,6 @@ import Stats from '../node_modules/three/examples/jsm/libs/stats.module.js';
 let camera, scene, renderer, stats;
 let cube, sphere, torus, material;
 
-let cubeCamera, cubeRenderTarget;
-
 let controls;
 
 init();
@@ -49,7 +47,8 @@ function init() {
         ]);  
 
 
-    var material = new THREE.MeshBasicMaterial( { color: "#433F81" } );
+    var material = new THREE.MeshPhongMaterial();
+    material.color.setHSL(1, 1, .75);
     cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material );
     scene.add( cube );
 
@@ -60,7 +59,21 @@ function init() {
     document.body.appendChild( renderer.domElement );
 
    controls = new OrbitControls( camera, renderer.domElement );
-   controls.autoRotate = true;
+   //controls.autoRotate = true;
+
+   const skyColor = 0xedf3ff;  // light blue
+   const groundColor = 0xe6e6e6;  // brownish orange
+   const intensity = 0.25;
+   const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+   scene.add(light);
+
+   const color = 0xFFFFFF;
+   const sunintensity = 0.75;
+   const sunlight = new THREE.DirectionalLight(color, sunintensity);
+   sunlight.position.set(-51, 5, 15);
+   sunlight.target.position.set(-5, 0, 0);
+   scene.add(sunlight);
+   scene.add(sunlight.target);
 
 }
 
