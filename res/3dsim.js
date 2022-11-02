@@ -1,15 +1,9 @@
-//import * as THREE from 'three';
-/*import * as THREE from '../node_modules/three/build/three.module.js';
 
-import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
-import { CubeTextureLoader } from '../node_modules/three/src/loaders/CubeTextureLoader.js';
-import Stats from '../node_modules/three/examples/jsm/libs/stats.module.js';**/
+import * as THREE from 'https://unpkg.com/three/build/three.module.js';
 
-import * as THREE from 'three';
-
-import { OrbitControls } from 'https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js';
-import { CubeTextureLoader } from 'https://unpkg.com/three@0.146.0/src/loaders/CubeTextureLoader.js';
-import Stats from 'https://unpkg.com/three@0.146.0/examples/jsm/libs/stats.module.js';
+import { OrbitControls } from 'https://unpkg.com/three/examples/jsm/controls/OrbitControls.js';
+import { CubeTextureLoader } from 'https://unpkg.com/three/src/loaders/CubeTextureLoader.js';
+import Stats from 'https://unpkg.com/three/examples/jsm/libs/stats.module.js';
 
 let camera, scene, renderer, stats;
 let cube, cube2, sphere, torus, material;
