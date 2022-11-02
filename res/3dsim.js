@@ -64,17 +64,20 @@ function init() {
     materialReflect = new THREE.MeshStandardMaterial( {
         envMap: cubeRenderTarget.texture,
         roughness: 0.05,
-        metalness: 0.85
+        metalness: 0.85,
+        color: new THREE.Color( 0x647790 )
+
     } );
 
     const gui = new GUI();
     gui.add( materialReflect, 'roughness', 0, 1 );
     gui.add( materialReflect, 'metalness', 0, 1 );
+    gui.addColor( materialReflect, 'color')
     gui.add( renderer, 'toneMappingExposure', 0, 2 ).name( 'exposure' );
 
     var material = new THREE.MeshPhongMaterial();
     material.color.setHSL(1, 1, .75);
-    cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material );
+    cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), materialReflect );
     scene.add( cube );
 
     torus = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
