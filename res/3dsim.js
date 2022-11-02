@@ -23,6 +23,8 @@ function init() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.setAnimationLoop( animation );
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.VSMShadowMap;
 
     window.addEventListener( 'resize', onWindowResized );
 
@@ -78,13 +80,19 @@ function init() {
     var material = new THREE.MeshPhongMaterial();
     material.color.setHSL(1, 1, .75);
     cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), materialReflect );
+    cube.castShadow = true;
+    cube.receiveShadow = true;
     scene.add( cube );
 
     torus = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
+    torus.castShadow = true;
+    torus.receiveShadow = true;
     scene.add( torus );
 
 
     cube2 = new THREE.Mesh( new THREE.BoxGeometry( 15, 900, 15 ), material );
+    cube2.castShadow = true;
+    cube2.receiveShadow = true;
     scene.add( cube2 );
     
     //
@@ -100,13 +108,66 @@ function init() {
    const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
    scene.add(light);
 
-   const color = 0xFFFFFF;
-   const sunintensity = 0.75;
+   const color = 0xFFFFAA;
+   const sunintensity = 1.0;
    const sunlight = new THREE.DirectionalLight(color, sunintensity);
-   sunlight.position.set(-51, 5, 15);
-   sunlight.target.position.set(-5, 0, 0);
+   sunlight.position.set(-91, 35, 25);
+   sunlight.target.position.set(0, 0, 0);
+   sunlight.castShadow = true;
+   sunlight.shadow.camera.near = 0.1;
+   sunlight.shadow.camera.far = 1000;
+   sunlight.shadow.camera.right = 97;
+   sunlight.shadow.camera.left = - 97;
+   sunlight.shadow.camera.top	= 97;
+   sunlight.shadow.camera.bottom = - 97;
+   sunlight.shadow.mapSize.width = 512;
+   sunlight.shadow.mapSize.height = 512;
+   sunlight.shadow.radius = 2;
+   sunlight.shadow.bias = - 0.0005;
    scene.add(sunlight);
    scene.add(sunlight.target);
+
+   const ball = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
+   ball.castShadow = true;
+   ball.receiveShadow = true;
+   ball.position.set(-51, 15, 12);
+   scene.add( ball );
+
+   const cylinderGeometry = new THREE.CylinderGeometry( 6.75, 6.75,37, 32 );
+
+   const pillar1 = new THREE.Mesh( cylinderGeometry, material );
+   pillar1.position.set( 65, -30.5, 65 );
+   pillar1.castShadow = true;
+   pillar1.receiveShadow = true;
+
+   const pillar2 = pillar1.clone();
+   pillar2.position.set( 65, -30.5, - 65 );
+   const pillar3 = pillar1.clone();
+   pillar3.position.set( - 65, -30.5, 65 );
+   const pillar4 = pillar1.clone();
+   pillar4.position.set( - 65, -30.5, - 65 );
+
+   scene.add( pillar1 );
+   scene.add( pillar2 );
+   scene.add( pillar3 );
+   scene.add( pillar4 );
+
+   const planeGeometry = new THREE.PlaneGeometry( 200, 200 );
+   const planeMaterial = new THREE.MeshPhongMaterial( {
+       color: 0xff9999,
+       shininess: 0,
+       specular: 0x111111
+   } );
+
+   {
+        const ground = new THREE.Mesh( new THREE.BoxGeometry( 100,1, 100), material);
+       // ground.rotation.x = - Math.PI / 2;
+        ground.position.y = -50;
+        ground.scale.multiplyScalar( 3 );
+        ground.castShadow = true;
+        ground.receiveShadow = true;
+        scene.add( ground );
+   }
 
 }
 
