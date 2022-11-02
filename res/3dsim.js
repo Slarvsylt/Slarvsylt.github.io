@@ -3,10 +3,12 @@ import * as THREE from 'https://unpkg.com/three/build/three.module.js';
 
 import { OrbitControls } from 'https://unpkg.com/three/examples/jsm/controls/OrbitControls.js';
 import { CubeTextureLoader } from 'https://unpkg.com/three/src/loaders/CubeTextureLoader.js';
+import { GUI } from 'https://unpkg.com/three/examples/jsm/libs/lil-gui.module.min.js';
 import Stats from 'https://unpkg.com/three/examples/jsm/libs/stats.module.js';
 
 let camera, scene, renderer, stats;
-let cube, cube2, sphere, torus, material;
+let cube, cube2, sphere, torus, materialReflect;
+let cubeRenderTarget, cubeCamera
 
 let controls;
 
@@ -33,7 +35,7 @@ function init() {
     scene = new THREE.Scene();
     scene.rotation.y = 0.5; // avoid flying objects occluding the sun
 
-    scene.background = new CubeTextureLoader()
+    var texture = new CubeTextureLoader()
         .setPath( '../pics/cube/' )
         .load([
             'px.jpg',
@@ -43,18 +45,39 @@ function init() {
             'pz.jpg',
             'nz.jpg'
         ]);  
+        scene.background = texture;
+       // scene.environment = texture;
+      // scene.envMap = texture;
 
     {
         const color = 0x96a6b5;
         const density = 0.002;
         scene.fog = new THREE.FogExp2(color, density);
     }
+
+    cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 256 );
+    cubeRenderTarget.texture.type = THREE.HalfFloatType;
+    cubeRenderTarget.texture = texture;
+
+    cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
+
+    materialReflect = new THREE.MeshStandardMaterial( {
+        envMap: cubeRenderTarget.texture,
+        roughness: 0.05,
+        metalness: 0.85
+    } );
+
+    const gui = new GUI();
+    gui.add( materialReflect, 'roughness', 0, 1 );
+    gui.add( materialReflect, 'metalness', 0, 1 );
+    gui.add( renderer, 'toneMappingExposure', 0, 2 ).name( 'exposure' );
+
     var material = new THREE.MeshPhongMaterial();
     material.color.setHSL(1, 1, .75);
     cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), material );
     scene.add( cube );
 
-    torus = new THREE.Mesh( new THREE.SphereGeometry(5), material );
+    torus = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
     scene.add( torus );
 
 
