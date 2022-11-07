@@ -23,6 +23,7 @@ document.body.addEventListener('pointermove', e => {
 	const rect = document.body.getBoundingClientRect()
 	pointer.x = e.clientX - rect.left
 	pointer.y = e.clientY - rect.top
+	loop()
 	//console.log(pointer.x)
 	//eventQueue.push('pointerMove')
 })
@@ -51,6 +52,11 @@ function main(coord, cursor) {
 	const x = Math.floor(cursor.x) // column of the cell hovered
 	const y = Math.floor(cursor.y) // row of the cell hovered
 
+	//console.log("coord " + coord.x)
+	//console.log("coord " + coord.y)
+	//console.log("x " + x)
+	//console.log("y " + y)
+
 	if (coord.x == x && coord.y == y) return '┼'
 	if (coord.x == x) return '│'
 	if (coord.y == y) return '─'
@@ -59,20 +65,28 @@ function main(coord, cursor) {
 
 function loop(){
 	// Cursor update
-	//console.log("loop!")
+	console.log("loop!")
 	const cursor = {
 		// The canvas might be slightly larger than the number
 		// of cols/rows, min is required!
-		x       : Math.min(document.body.x-1, pointer.x / document.body.cellWidth),
-		y       : Math.min(document.body.y-1, pointer.y / document.body.lineHeight),
+		x       : pointer.x / 2,
+		y       : pointer.y / document.body.style.lineHeight,
 		pressed : pointer.pressed,
 		p : { // state of previous frame
-		x       : pointer.px / document.body.cellWidth,
-		y       : pointer.py / document.body.lineHeight,
+		x       : pointer.px / 2,
+		y       : pointer.py / document.body.style.lineHeight,
 		pressed : pointer.ppressed,
 		}
 	}
-	for(let i = 0; i <100; i++){
+	//console.log("x " + cursor.x)
+	//console.log("y " + cursor.y)
+	//console.log("document.body.x " + document.body.style.cellWidth)
+	//console.log("document.body.y " + document.body.style.lineHeight)
+	const parent = document.getElementById("cont")
+	while (parent.firstChild) {
+		parent.firstChild.remove()
+	}
+	for(let i = 0; i <30; i++){
 		const offs = i * 100
 		const span = document.createElement('span')
 		span.style.display = 'block'
@@ -82,7 +96,7 @@ function loop(){
 			span.textContent += out
 			//console.log(out)
 		}
-		document.body.appendChild(span)
+		parent.appendChild(span)
 	}
 
 }
