@@ -69,11 +69,11 @@ function loop(){
 	const cursor = {
 		// The canvas might be slightly larger than the number
 		// of cols/rows, min is required!
-		x       : pointer.x / 2,
+		x       : pointer.x / 10,
 		y       : pointer.y / document.body.style.lineHeight,
 		pressed : pointer.pressed,
 		p : { // state of previous frame
-		x       : pointer.px / 2,
+		x       : pointer.px / 10,
 		y       : pointer.py / document.body.style.lineHeight,
 		pressed : pointer.ppressed,
 		}
