@@ -168,7 +168,9 @@ function init() {
         ground.receiveShadow = true;
         scene.add( ground );
    }
-
+   effect = new THREE.AsciiEffect(renderer);
+   effect.setSize(width, height);
+   container.appendChild(effect.domElement);
 }
 
 function onWindowResized() {
