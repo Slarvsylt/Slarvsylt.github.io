@@ -44,17 +44,17 @@ window.setInterval(() => {
 }, 1000 / 60);
 
 // Globals have module scope
-const pattern = 'YOKjeb01═|+:. '
+const pattern = 'Jesper  <3  Yoko═|+:. '
 
 // This is the main loop.
 // Character coordinates are passed in coord {x, y, index}.
 // The function must return a single character or, alternatively, an object:
 // {char, color, background, weight}.
 export function main(coord, context, cursor, buffer) {
-	const t = context.time * 0.0001
+	const t = context.time * 0.001
 	const x = coord.x
 	const y = coord.y
-	const o = Math.sin(y * Math.sin(t) * 0.2 + x * 0.04 + t) * 20
+	const o = Math.sin(y * Math.cos(t) * 0.2 + x * 0.04 + t) * 20
 	const i = Math.round(Math.abs(x + y + o)) % pattern.length
 	return {
 		char   : pattern[i],
