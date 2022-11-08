@@ -1,11 +1,19 @@
 body {
 	font-family: 'Playfair Display', serif;
 	background-color:#ffffd6;
-	width:100%;margin:0px;height:auto;
+	width:100%;margin:0px;height:100%;
   cursor:default;overflow-y:auto;
+  line-height: 1.2;
 }
 
 html {
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.2;
+}
+
+html, body{
   padding: 0;
   margin: 0;
   font-size: 1em;
@@ -18,8 +26,8 @@ pre {
   padding:0;
   left:0;
   top:0;
-  width:100vw;
-  height:100vh;
+  width:100%;
+  height:100%;
   font-family: inherit;
 }
 

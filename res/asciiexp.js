@@ -23,8 +23,7 @@ document.body.addEventListener('pointermove', e => {
 	const rect = document.body.getBoundingClientRect()
 	pointer.x = e.clientX - rect.left
 	pointer.y = e.clientY - rect.top
-	loop()
-	//console.log(pointer.x)
+	//console.log(pointer.x + " , " + pointer.y)
 	//eventQueue.push('pointerMove')
 })
 
@@ -44,59 +43,21 @@ window.setInterval(() => {
    // loop()
 }, 1000 / 60);
 
-loop()
+// Globals have module scope
+const pattern = 'YOKjeb01═|+:. '
 
-function main(coord, cursor) {
-	// The cursor coordinates are mapped to the cell
-	// (fractional, needs rounding).
-	const x = Math.floor(cursor.x) // column of the cell hovered
-	const y = Math.floor(cursor.y) // row of the cell hovered
-
-	//console.log("coord " + coord.x)
-	//console.log("coord " + coord.y)
-	//console.log("x " + x)
-	//console.log("y " + y)
-
-	if (coord.x == x && coord.y == y) return '┼'
-	if (coord.x == x) return '│'
-	if (coord.y == y) return '─'
-	return (coord.x + coord.y) % 2 ? 'A' : ' '
-}
-
-function loop(){
-	// Cursor update
-	console.log("loop!")
-	const cursor = {
-		// The canvas might be slightly larger than the number
-		// of cols/rows, min is required!
-		x       : pointer.x / 10,
-		y       : pointer.y / document.body.style.lineHeight,
-		pressed : pointer.pressed,
-		p : { // state of previous frame
-		x       : pointer.px / 10,
-		y       : pointer.py / document.body.style.lineHeight,
-		pressed : pointer.ppressed,
-		}
+// This is the main loop.
+// Character coordinates are passed in coord {x, y, index}.
+// The function must return a single character or, alternatively, an object:
+// {char, color, background, weight}.
+export function main(coord, context, cursor, buffer) {
+	const t = context.time * 0.0001
+	const x = coord.x
+	const y = coord.y
+	const o = Math.sin(y * Math.sin(t) * 0.2 + x * 0.04 + t) * 20
+	const i = Math.round(Math.abs(x + y + o)) % pattern.length
+	return {
+		char   : pattern[i],
+		fontWeight : '100', // or 'light', 'bold', '400'
 	}
-	//console.log("x " + cursor.x)
-	//console.log("y " + cursor.y)
-	//console.log("document.body.x " + document.body.style.cellWidth)
-	//console.log("document.body.y " + document.body.style.lineHeight)
-	const parent = document.getElementById("cont")
-	while (parent.firstChild) {
-		parent.firstChild.remove()
-	}
-	for(let i = 0; i <30; i++){
-		const offs = i * 100
-		const span = document.createElement('span')
-		span.style.display = 'block'
-		for(let j = 0; j < 100; j++){
-			const idx = j + offs
-			const out = main({x:j, y:i, index:idx}, cursor)
-			span.textContent += out
-			//console.log(out)
-		}
-		parent.appendChild(span)
-	}
-
 }

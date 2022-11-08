@@ -4,11 +4,19 @@
         <meta charset=utf-8>
         <title>WOW!</title>
         <link rel="stylesheet" href="default.css">
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     </head>
-    <body style="margin: 10%;line-height: 1.2;">
-        <pre id="cont" style="margin: 10%;line-height: 1.2;"></pre>
-        <script type="module" src="res/asciiexp.js">
+    <body>
+        <pre id="cont"></pre>
+        <!-- <script type="module" src="res/asciiexp.js"></script> -->
+        <script type="module">
+            import { run } from '/src/run.js'
+            import * as program from '/res/asciiexp.js'
+            run(program, { element : document.querySelector('pre') }).then(function(e){
+                console.log(e)
+            }).catch(function(e) {
+                console.warn(e.message)
+                console.log(e.error)
+            })
         </script>
     </body>
 </html>

@@ -28,9 +28,9 @@ import { drawInfo } from '/src/modules/drawbox.js'
 
 // This function is called after the main loop and is useful
 // to manipulate the buffer; in this case with a window overlay.
-export function post(context, cursor, buffer) {
+/*export function post(context, cursor, buffer) {
 	// An extra object can be passed to drawInfo to alter the default style
 	drawInfo(context, cursor, buffer, {
 		color : 'white', backgroundColor : 'royalblue', shadowStyle : 'gray'
 	})
-}
+}*/
