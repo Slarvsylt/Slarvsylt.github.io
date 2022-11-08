@@ -1,8 +1,8 @@
 body {
-	font-family: 'Playfair Display', serif;
+  font-family: 'Courier New', Courier, monospace;
 	background-color:#ffffd6;
-	width:100%;margin:0px;height:100%;
-  cursor:default;overflow-y:auto;
+	height:100%;
+  cursor:default;
   line-height: 1.2;
 }
 
@@ -16,7 +16,8 @@ html {
 html, body{
   padding: 0;
   margin: 0;
-  font-size: 1em;
+  font-size: 1.0em;
+  font-weight: 300;
   line-height: 1.2;
 }
 
