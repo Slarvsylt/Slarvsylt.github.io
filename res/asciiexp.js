@@ -45,8 +45,8 @@ window.setInterval(() => {
    // loop()
 }, 1000 / 60);
 
-// Globals have module scope
-const pattern = '█8AOuoi=-;:,.'
+// '█8AOuoi=-;:,.'
+const pattern = '█8#Ouoi=-;:,.'
 
 // This is the main loop.
 // Character coordinates are passed in coord {x, y, index}.
@@ -60,24 +60,23 @@ export function main(coord, context, cursor, buffer) {
 	const x = coord.x
 	const y = coord.y
 
-	const xy = v2.vec2(2*x,2*y)
+	const xy = 	v2.vec2(2*x,2*y)
 	const l = v2.add(v2.neg(res),xy)
 	const px = l.x/res.y
 	const py = l.y/res.y
-	const p = {px,py}
 	const a = Math.atan(px,py)
-	const r = Math.pow(Math.pow(px*px,3) + Math.pow(py*py,2), 1/6)
+	const r = Math.pow(Math.pow(px*px,1.5) + Math.pow(py*py,1), 1/6)
 	const u = 1/r + 0.2*t
 	const f = Math.cos(12*u) * Math.cos(9*a)
-	var col = 0.2 + Math.sin(3.1415*f * 2)
+	var col = 0.3 + Math.sin(3.1415*f * 1.5)
 	col *= r
-	const i = Math.round(col) % pattern.length
+	//const i = Math.round(col) % pattern.length
 	//console.log(i)
-	//const o = Math.sin(y * Math.sin(t) * 0.2 + x * 0.04 + t) * 10
-	//const i = Math.round(Math.abs(x + y + o)) % pattern.length
+	const o = Math.sin(y * Math.sin(t) * 0.2 + x * 0.04 + t) 
+	const i = Math.round(Math.abs(col + o)) % pattern.length
 	return {
 		char   : pattern[i],
-		color   : 'black',
+		color   : 'blue',
 		fontWeight : 'light', // or 'light', 'bold', '400'
 	}
 }
