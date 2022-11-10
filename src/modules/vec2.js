@@ -155,7 +155,7 @@ export function norm(a, out) {
 }
 
 // Negates a vector
-export function neg(v, out) {
+export function neg(a, out) {
 	out = out || vec2(0, 0)
 
 	out.x = -a.x
