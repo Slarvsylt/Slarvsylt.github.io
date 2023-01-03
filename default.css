@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Karrik';
+  src: local("Karrik"), local('Karrik-Regular') url('Karrik-Regular.tff');
+}
+
 body {
   font-family: 'Courier New', Courier, monospace;
 	background-color:#ffffd6;
@@ -43,7 +48,7 @@ pre {
   width: 98%;
   top: 0px;
   vertical-align: top;
-  background-color: rgb(235, 255, 196);
+  background-color: #ffe100;
   text-align: center;
   padding: 15px 15px 15px 15px;
 }
