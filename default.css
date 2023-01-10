@@ -82,10 +82,10 @@ canvas {
   z-index: -1;
 }
 
-.main_cointainer{
-  width: 60%;
+.main_container{
+  width: 90%;
   margin: auto;
-  margin-left:auto; 
+  margin-left: 15%; 
   margin-right:auto;
   overflow:hidden;
   /*display: table;*/
