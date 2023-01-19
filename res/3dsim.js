@@ -8,7 +8,8 @@ import Stats from 'https://unpkg.com/three/examples/jsm/libs/stats.module.js';
 
 let camera, scene, renderer, stats;
 let cube, cube2, sphere, torus, materialReflect;
-let cubeRenderTarget, cubeCamera
+let cubeRenderTarget, cubeCamera;
+let pos;
 
 let controls;
 
@@ -70,12 +71,14 @@ function init() {
         color: new THREE.Color( 0x647790 )
 
     } );
+    pos = 0
 
     const gui = new GUI();
     gui.add( materialReflect, 'roughness', 0, 1 );
     gui.add( materialReflect, 'metalness', 0, 1 );
     gui.addColor( materialReflect, 'color')
     gui.add( renderer, 'toneMappingExposure', 0, 2 ).name( 'exposure' );
+    gui.add(pos,'pos',-50,50)
     
     //
     //scene.background = new THREE.Color(0xff0000);
@@ -115,15 +118,8 @@ function init() {
    ball.position.set(0,0,0);
    scene.add( ball );
 
-   const planeGeometry = new THREE.PlaneGeometry( 200, 200 );
-   const planeMaterial = new THREE.MeshPhongMaterial( {
-       color: 0xff9999,
-       shininess: 0,
-       specular: 0x111111
-   } );
-
    {
-        const ground = new THREE.Mesh( new THREE.BoxGeometry( 100,1, 100), material);
+        const ground = new THREE.Mesh( new THREE.BoxGeometry( 100,1, 100), materialReflect);
        // ground.rotation.x = - Math.PI / 2;
         ground.position.y = -50;
         ground.scale.multiplyScalar( 3 );
@@ -131,8 +127,10 @@ function init() {
         ground.receiveShadow = true;
         scene.add( ground );
    }
-   effect = new THREE.AsciiEffect(renderer);
-   effect.setSize(width, height);
+   effect = new AsciiEffect( renderer, ' .:-+*=%@#', { invert: true } );
+   effect.setSize( window.innerWidth, window.innerHeight );
+   effect.domElement.style.color = 'white';
+   effect.domElement.style.backgroundColor = 'black';
    container.appendChild(effect.domElement);
 }
 
