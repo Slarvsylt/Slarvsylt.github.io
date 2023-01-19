@@ -76,31 +76,13 @@ function init() {
     gui.add( materialReflect, 'metalness', 0, 1 );
     gui.addColor( materialReflect, 'color')
     gui.add( renderer, 'toneMappingExposure', 0, 2 ).name( 'exposure' );
-
-    var material = new THREE.MeshPhongMaterial();
-    material.color.setHSL(1, 1, .75);
-    cube = new THREE.Mesh( new THREE.BoxGeometry( 15, 15, 15 ), materialReflect );
-    cube.castShadow = true;
-    cube.receiveShadow = true;
-    scene.add( cube );
-
-    torus = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
-    torus.castShadow = true;
-    torus.receiveShadow = true;
-    scene.add( torus );
-
-
-    cube2 = new THREE.Mesh( new THREE.BoxGeometry( 15, 900, 15 ), material );
-    cube2.castShadow = true;
-    cube2.receiveShadow = true;
-    scene.add( cube2 );
     
     //
     //scene.background = new THREE.Color(0xff0000);
     document.body.appendChild( renderer.domElement );
 
    controls = new OrbitControls( camera, renderer.domElement );
-   controls.autoRotate = true;
+   controls.autoRotate = false;
 
    const skyColor = 0xedf3ff;  // light blue
    const groundColor = 0xe6e6e6;  //  grey
@@ -130,27 +112,8 @@ function init() {
    const ball = new THREE.Mesh( new THREE.SphereGeometry(5), materialReflect );
    ball.castShadow = true;
    ball.receiveShadow = true;
-   ball.position.set(-51, 15, 12);
+   ball.position.set(0,0,0);
    scene.add( ball );
-
-   const cylinderGeometry = new THREE.CylinderGeometry( 6.75, 6.75,37, 32 );
-
-   const pillar1 = new THREE.Mesh( cylinderGeometry, material );
-   pillar1.position.set( 65, -30.5, 65 );
-   pillar1.castShadow = true;
-   pillar1.receiveShadow = true;
-
-   const pillar2 = pillar1.clone();
-   pillar2.position.set( 65, -30.5, - 65 );
-   const pillar3 = pillar1.clone();
-   pillar3.position.set( - 65, -30.5, 65 );
-   const pillar4 = pillar1.clone();
-   pillar4.position.set( - 65, -30.5, - 65 );
-
-   scene.add( pillar1 );
-   scene.add( pillar2 );
-   scene.add( pillar3 );
-   scene.add( pillar4 );
 
    const planeGeometry = new THREE.PlaneGeometry( 200, 200 );
    const planeMaterial = new THREE.MeshPhongMaterial( {
@@ -185,20 +148,6 @@ function onWindowResized() {
 function animation(msTime) {
 
     const time = msTime / 1000;
-
-    cube.position.x = Math.cos( time ) * 30;
-    cube.position.y = Math.sin( time ) * 30;
-    cube.position.z = Math.sin( time ) * 30;
-
-    cube.rotation.x += 0.02;
-    cube.rotation.y += 0.03;
-
-    torus.position.x = Math.cos( time + 10 ) * 30;
-    torus.position.y = Math.sin( time + 10 ) * 30;
-    torus.position.z = Math.sin( time + 10 ) * 30;
-
-    torus.rotation.x += 0.02;
-    torus.rotation.y += 0.03;
 
     renderer.render( scene, camera );
     controls.update();

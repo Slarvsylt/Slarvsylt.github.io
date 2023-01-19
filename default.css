@@ -45,12 +45,14 @@ pre {
 
 #sidebar {
   position: sticky;
-  width: 98%;
+  width: 100%;
   top: 0px;
+  font-family: 'Karrik';
   vertical-align: top;
   background-color: #ffe100;
   text-align: center;
   padding: 15px 15px 15px 15px;
+  overflow-wrap: break-word;
 }
 
 .centerx,.centery,.centerxy{
