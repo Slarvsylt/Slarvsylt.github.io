@@ -1,5 +1,3 @@
-import * as Paper from "../paper/dist/paper-full.js"
-
 function toDegrees (angle) {
     return angle * 180 / Math.PI;
 }
@@ -8,8 +6,8 @@ function toRadians (angle) {
     return angle * Math.PI / 180;
 }
 
-var path = new Paper.Path.Circle(new Point(80, 50), 30);
-path.strokeColor = 'black';
+//var path = new Paper.Path.Circle(new Point(80, 50), 30);
+//path.strokeColor = 'black';
 
 // module aliases
 var Engine = Matter.Engine,
