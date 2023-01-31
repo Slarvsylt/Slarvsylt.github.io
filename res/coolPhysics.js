@@ -1,3 +1,5 @@
+//import * as paper from "../paper/dist/paper-full.js";
+
 function toDegrees (angle) {
     return angle * 180 / Math.PI;
 }
@@ -6,8 +8,14 @@ function toRadians (angle) {
     return angle * Math.PI / 180;
 }
 
-//var path = new Paper.Path.Circle(new Point(80, 50), 30);
-//path.strokeColor = 'black';
+var canvas = document.getElementById('renderCanvas');
+paper.setup(canvas);
+
+var path = new paper.Path.Circle(new paper.Point(80, 50), 30);
+path.strokeColor = 'black';
+// Draw the view now:
+paper.view.draw();
+
 
 // module aliases
 var Engine = Matter.Engine,
@@ -34,7 +42,7 @@ var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframes: true
+        wireframes: false
     }
 });
 
