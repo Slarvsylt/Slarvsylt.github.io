@@ -42,7 +42,9 @@ var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframes: false
+        wireframes: false,
+        background: 'transparent',
+        wireframeBackground: 'transparent'
     }
 });
 

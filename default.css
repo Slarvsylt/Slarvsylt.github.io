@@ -109,6 +109,7 @@ canvas {
 
 .content_headline {
   font-size:23px;line-height:30px;font-weight:700;
+  font-family: "Karrik";
 	text-decoration: underline;
 	text-decoration-color: #f09;
 	color:#f09;
