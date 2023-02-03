@@ -82,7 +82,7 @@ var boxA = Bodies.rectangle(150, 400, 80, 80, {
         sprite:{
             texture:'../pics/jeppeFace.jpg',
             yScale: 0.27,
-            xScale: 0.27
+            xScale: 0.27 
         }
     }
 });
@@ -95,7 +95,7 @@ var boxB = Bodies.rectangle(100, 400, 80, 80, {
         }
     }
 });
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true, visible: false });
 var center = Bodies.circle(500,300,50,{
     isStatic:true
 });
@@ -162,11 +162,23 @@ for(let i = 0; i < number; i++){
 };
 
 // add all of the bodies to the world
-Composite.add(engine.world, [boxA, boxB, ground, 
-    Bodies.rectangle(400, 0, 800, 50, { isStatic: true }),
-    Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-    Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-    Bodies.rectangle(0, 300, 50, 600, { isStatic: true })
+Composite.add(engine.world, [boxA, boxB, 
+    Bodies.rectangle(400, 0, 800, 50, { isStatic: true,
+        render: {
+            visible: false
+        }}),
+    Bodies.rectangle(400, 600, 800, 50, { isStatic: true,
+        render: {
+            visible: false
+        }}),
+    Bodies.rectangle(800, 300, 50, 600, { isStatic: true,
+        render: {
+            visible: false
+        }}),
+    Bodies.rectangle(0, 300, 50, 600, { isStatic: true,
+        render: {
+            visible: false
+        }})
 ]);
 Composite.add(engine.world,circles);
 //Composite.add(engine.world,anchors);
