@@ -7,14 +7,25 @@ function toDegrees (angle) {
 function toRadians (angle) {
     return angle * Math.PI / 180;
 }
-
-var canvas = document.getElementById('renderCanvas');
-paper.setup(canvas);
-
-var path = new paper.Path.Circle(new paper.Point(80, 50), 30);
-path.strokeColor = 'black';
-// Draw the view now:
-paper.view.draw();
+// Only executed our code once the DOM is ready.
+window.onload = function() {
+    // Get a reference to the canvas object
+    var canvas = document.getElementById('renderCanvas');
+    // Create an empty project and a view for the canvas:
+    paper.setup(canvas);
+    // Create a Paper.js Path to draw a line into it:
+    var path = new paper.Path();
+    // Give the stroke a color
+    path.strokeColor = 'black';
+    var start = new paper.Point(100, 100);
+    // Move to start and draw a line from there
+    path.moveTo(start);
+    // Note that the plus operator on Point objects does not work
+    // in JavaScript. Instead, we need to call the add() function:
+    path.lineTo(start.add([ 200, -50 ]));
+    // Draw the view now:
+    paper.view.draw();
+}
 
 
 // module aliases
@@ -48,11 +59,18 @@ var render = Render.create({
     }
 });
 
-
+var cursor = Bodies.circle(300,300,50,{
+    isStatic:false,
+    render:{
+        visible: true
+    }
+});
     // add mouse control
 var mouse = Mouse.create(render.canvas),
     mouseConstraint = MouseConstraint.create(engine, {
         mouse: mouse,
+        body: cursor,
+        element: document.body,
         constraint: {
             stiffness: 0.2,
             render: {
@@ -60,10 +78,8 @@ var mouse = Mouse.create(render.canvas),
             }
         }
     });
-var cursor = Bodies.circle(300,300,50,{
-    isStatic:false
-});
-mouseConstraint.body = cursor;
+
+//mouseConstraint.body = cursor;
 
 Composite.add(world, mouseConstraint);
 
