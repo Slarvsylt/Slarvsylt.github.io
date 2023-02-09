@@ -38,7 +38,17 @@ var Engine = Matter.Engine,
     MouseConstraint = Matter.MouseConstraint,
     Mouse = Matter.Mouse,
     Composite = Matter.Composite,
+    Body = Matter.Body,
     Bodies = Matter.Bodies;
+
+function renderLoop(){
+    Body.translate(cursor,{
+        x: mouse.x,
+        y: mouse.y
+    })
+    console.log("Cursor: "+ cursor.position.x)
+    window.requestAnimationFrame(renderLoop.bind(cursor))
+}
 
 
 // create an engine
@@ -50,7 +60,8 @@ engine.gravity.y = 0;
 
 // create a renderer
 var render = Render.create({
-    element: document.body,
+    //element: document.body,
+    canvas: document.getElementById('renderCanvas'),
     engine: engine,
     options: {
         wireframes: false,
@@ -59,27 +70,32 @@ var render = Render.create({
     }
 });
 
-var cursor = Bodies.circle(300,300,50,{
+var cursor = Bodies.circle(200,300,30,{
     isStatic:false,
+    label: "test",
     render:{
         visible: true
     }
 });
-    // add mouse control
-var mouse = Mouse.create(render.canvas),
-    mouseConstraint = MouseConstraint.create(engine, {
-        mouse: mouse,
-        body: cursor,
-        element: document.body,
-        constraint: {
-            stiffness: 0.2,
-            render: {
-                visible: false
-            }
-        }
-    });
 
-//mouseConstraint.body = cursor;
+Composite.add(engine.world,cursor)
+
+var mouse = Mouse.create(render.canvas);
+mouseConstraint = MouseConstraint.create(engine, {
+    mouse: mouse,
+    //body: cursor,
+    constraint: {
+        // allow bodies on mouse to rotate
+        stiffness: 0.1,
+        angularStiffness: 0.1,
+        render: {
+            visible: false
+        }
+    }
+});
+
+mouseConstraint.body = cursor;
+console.log(mouseConstraint.body);
 
 Composite.add(world, mouseConstraint);
 
@@ -199,7 +215,6 @@ Composite.add(engine.world, [boxA, boxB,
 Composite.add(engine.world,circles);
 //Composite.add(engine.world,anchors);
 Composite.add(engine.world,links);
-Composite.add(engine.world,cursor)
 
 // run the renderer
 Render.run(render);
@@ -209,3 +224,22 @@ var runner = Runner.create();
 
 // run the engine
 Runner.run(runner, engine);
+
+onclick = (event) => {console.log(mouseConstraint)};
+renderLoop();
+
+render.canvas.addEventListener('mousemove', (event) => 
+{
+    //console.log(render.canvas)
+    mouse.x = event.clientX - cursor.position.x;
+    mouse.y = event.clientY - cursor.position.y;
+    console.log("Mouse: "+ mouse.position.x)
+    //renderLoop();
+});
+//onmousemove = (event) => {//console.log(event.clientX)
+ //                           mouse.x = event.clientX - cursor.positionPrev.x;
+  //                          mouse.y = event.clientY - cursor.positionPrev.y;
+   //                         console.log("Mouse: "+ mouse.position.x)
+    //                        renderLoop();};
+
+//renderLoop()
