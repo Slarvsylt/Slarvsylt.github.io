@@ -8,24 +8,9 @@ function toRadians (angle) {
     return angle * Math.PI / 180;
 }
 // Only executed our code once the DOM is ready.
-window.onload = function() {
-    // Get a reference to the canvas object
-    var canvas = document.getElementById('renderCanvas');
-    // Create an empty project and a view for the canvas:
-    paper.setup(canvas);
-    // Create a Paper.js Path to draw a line into it:
-    var path = new paper.Path();
-    // Give the stroke a color
-    path.strokeColor = 'black';
-    var start = new paper.Point(100, 100);
-    // Move to start and draw a line from there
-    path.moveTo(start);
-    // Note that the plus operator on Point objects does not work
-    // in JavaScript. Instead, we need to call the add() function:
-    path.lineTo(start.add([ 200, -50 ]));
-    // Draw the view now:
-    paper.view.draw();
-}
+//window.onload = function() {
+//    
+//}
 
 
 // module aliases
@@ -41,201 +26,183 @@ var Engine = Matter.Engine,
     Body = Matter.Body,
     Bodies = Matter.Bodies;
 
-function renderLoop(){
-    Body.translate(cursor,{
-        x: mouse.x,
-        y: mouse.y
-    })
-    console.log("Cursor: "+ cursor.position.x)
-    window.requestAnimationFrame(renderLoop.bind(cursor))
+class Sketch{
+    constructor(){
+        this.physics();
+        this.addObjects();
+        this.initPaper();
+        this.renderLoop();
+        this.mouseEvents();
+    }
+
+    physics(){
+        this.engine = Engine.create(),
+        this.world = this.engine.world;
+
+        this.engine.gravity.x = 0;
+        this.engine.gravity.y = 0;
+
+        // create a renderer
+        this.render = Render.create({
+            //element: document.body,
+            canvas: document.getElementById('renderCanvas'),
+            engine: this.engine,
+            options: {
+                wireframes: false,
+                background: 'transparent',
+                wireframeBackground: 'transparent'
+            }
+        });
+
+        // run the renderer
+        Render.run(this.render);
+
+        // create runner
+        this.runner = Runner.create();
+
+        // run the engine
+        Runner.run(this.runner, this.engine);
+    }
+
+    initPaper(){
+        // Get a reference to the canvas object
+        var canvas = document.getElementById('renderCanvas');
+        // Create an empty project and a view for the canvas:
+        paper.setup(canvas);
+        // Create a Paper.js Path to draw a line into it:
+        var path = new paper.Path();
+        // Give the stroke a color
+        path.strokeColor = 'black';
+        var start = new paper.Point(100, 100);
+        // Move to start and draw a line from there
+        path.moveTo(start);
+        // Note that the plus operator on Point objects does not work
+        // in JavaScript. Instead, we need to call the add() function:
+        path.lineTo(start.add([ 200, -50 ]));
+        // Draw the view now:
+        paper.view.draw();
+    }
+
+    renderLoop(){
+        Body.translate(this.cursor,{
+            x: this.mouse.x,
+            y: this.mouse.y
+        })
+        window.requestAnimationFrame(this.renderLoop.bind(this));
+    }
+
+    addObjects(){
+        this.mouse = Mouse.create(this.render.canvas);
+        this.mouseConstraint = MouseConstraint.create(this.engine, {
+            mouse: this.mouse,
+            //body: cursor,
+            constraint: {
+                // allow bodies on mouse to rotate
+                stiffness: 0.1,
+                angularStiffness: 0.1,
+                render: {
+                    visible: false
+                }
+            }
+        });
+        //console.log(mouseConstraint.body);
+    
+        
+    
+        // keep the mouse in sync with rendering
+        this.render.mouse = this.mouse;
+
+        this.cursor = Bodies.circle(200,300,30,{
+            isStatic:false,
+            label: "test",
+            render:{
+                visible: true
+            }
+        });
+        var center = Bodies.circle(500,300,50,{
+            isStatic:true
+        });
+    
+        var circles = [];
+        var anchors = [];
+        var links = [];
+        var radius = 20;
+        var number = 39;
+    
+        for(let i = 0; i < number; i++){
+            var x = radius*Math.cos(toDegrees(i)/360);
+            var y = radius*Math.sin(toDegrees(i)/360);
+    
+            circles.push(
+                Bodies.circle(
+                    x*10+500,
+                    y*10+300,
+                    10,
+                    {
+                        density: 0.005,
+                        restitution: 0
+                    }
+                )
+            )
+    
+            anchors.push(
+                Bodies.circle(
+                    x*10+500,
+                    y*10+300,
+                    10,{
+                        isStatic:true
+                    }
+                )
+            )
+        };
+    
+    
+        for(let i = 0; i < number; i++){
+            var x = radius*Math.cos(toDegrees(i));
+            var y = radius*Math.sin(toDegrees(i));
+            let next = circles[i+1]?circles[i+1]:circles[0]
+            links.push(
+                Constraint.create({
+                    bodyA:circles[i],
+                    bodyB:anchors[i],
+                    stiffness:0.01
+                })
+            );
+            links.push(
+                Constraint.create({
+                    bodyA:circles[i],
+                    bodyB:next,
+                    stiffness:0.9
+                })
+            );
+            links.push(
+                Constraint.create({
+                    bodyA:circles[i],
+                    bodyB:center,
+                    stiffness:0.01
+                })
+            );
+        };
+        Composite.add(this.world, this.mouseConstraint);
+        Composite.add(this.world,circles);
+        //Composite.add(engine.world,anchors);
+        Composite.add(this.world,links);
+        Composite.add(this.world,this.cursor)
+    }
+
+    mouseEvents(){
+        this.render.canvas.addEventListener('mousemove', (event) => 
+        {
+            //console.log(render.canvas)
+            this.mouse.x = event.clientX - this.cursor.position.x;
+            this.mouse.y = event.clientY - this.cursor.position.y;
+            console.log("Mouse: "+ this.mouse.position.x)
+        });
+    }
 }
+let sketch = new Sketch();
 
-
-// create an engine
-var engine = Engine.create(),
-    world = engine.world;
-
-engine.gravity.x = 0;
-engine.gravity.y = 0;
-
-// create a renderer
-var render = Render.create({
-    //element: document.body,
-    canvas: document.getElementById('renderCanvas'),
-    engine: engine,
-    options: {
-        wireframes: false,
-        background: 'transparent',
-        wireframeBackground: 'transparent'
-    }
-});
-
-var cursor = Bodies.circle(200,300,30,{
-    isStatic:false,
-    label: "test",
-    render:{
-        visible: true
-    }
-});
-
-Composite.add(engine.world,cursor)
-
-var mouse = Mouse.create(render.canvas);
-mouseConstraint = MouseConstraint.create(engine, {
-    mouse: mouse,
-    //body: cursor,
-    constraint: {
-        // allow bodies on mouse to rotate
-        stiffness: 0.1,
-        angularStiffness: 0.1,
-        render: {
-            visible: false
-        }
-    }
-});
-
-mouseConstraint.body = cursor;
-console.log(mouseConstraint.body);
-
-Composite.add(world, mouseConstraint);
-
-// keep the mouse in sync with rendering
-render.mouse = mouse;
-
-var particleOptions = { 
-    friction: 0.05,
-    frictionStatic: 0.1,
-    render: { visible: true } 
-};
-
-// create two boxes and a ground
-var boxA = Bodies.rectangle(150, 400, 80, 80, {
-    render:{
-        sprite:{
-            texture:'../pics/jeppeFace.jpg',
-            yScale: 0.27,
-            xScale: 0.27 
-        }
-    }
-});
-var boxB = Bodies.rectangle(100, 400, 80, 80, {
-    render:{
-        sprite:{
-            texture:'../pics/yokoFace.jpg',
-            yScale: 0.27,
-            xScale: 0.27
-        }
-    }
-});
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true, visible: false });
-var center = Bodies.circle(500,300,50,{
-    isStatic:true
-});
-
-var circles = [];
-var anchors = [];
-var links = [];
-var radius = 20;
-var number = 39;
-
-for(let i = 0; i < number; i++){
-    var x = radius*Math.cos(toDegrees(i)/360);
-    var y = radius*Math.sin(toDegrees(i)/360);
-
-    circles.push(
-        Bodies.circle(
-            x*10+500,
-            y*10+300,
-            10,
-            {
-                density: 0.005,
-                restitution: 0
-            }
-        )
-    )
-
-    anchors.push(
-        Bodies.circle(
-            x*10+500,
-            y*10+300,
-            10,{
-                isStatic:true
-            }
-        )
-    )
-};
-
-
-for(let i = 0; i < number; i++){
-    var x = radius*Math.cos(toDegrees(i));
-    var y = radius*Math.sin(toDegrees(i));
-    let next = circles[i+1]?circles[i+1]:circles[0]
-    links.push(
-        Constraint.create({
-            bodyA:circles[i],
-            bodyB:anchors[i],
-            stiffness:0.01
-        })
-    );
-    links.push(
-        Constraint.create({
-            bodyA:circles[i],
-            bodyB:next,
-            stiffness:0.9
-        })
-    );
-    links.push(
-        Constraint.create({
-            bodyA:circles[i],
-            bodyB:center,
-            stiffness:0.01
-        })
-    );
-};
-
-// add all of the bodies to the world
-Composite.add(engine.world, [boxA, boxB, 
-    Bodies.rectangle(400, 0, 800, 50, { isStatic: true,
-        render: {
-            visible: false
-        }}),
-    Bodies.rectangle(400, 600, 800, 50, { isStatic: true,
-        render: {
-            visible: false
-        }}),
-    Bodies.rectangle(800, 300, 50, 600, { isStatic: true,
-        render: {
-            visible: false
-        }}),
-    Bodies.rectangle(0, 300, 50, 600, { isStatic: true,
-        render: {
-            visible: false
-        }})
-]);
-Composite.add(engine.world,circles);
-//Composite.add(engine.world,anchors);
-Composite.add(engine.world,links);
-
-// run the renderer
-Render.run(render);
-
-// create runner
-var runner = Runner.create();
-
-// run the engine
-Runner.run(runner, engine);
-
-onclick = (event) => {console.log(mouseConstraint)};
-renderLoop();
-
-render.canvas.addEventListener('mousemove', (event) => 
-{
-    //console.log(render.canvas)
-    mouse.x = event.clientX - cursor.position.x;
-    mouse.y = event.clientY - cursor.position.y;
-    console.log("Mouse: "+ mouse.position.x)
-    //renderLoop();
-});
+onclick = (event) => {console.log(sketch.mouseConstraint)};
 //onmousemove = (event) => {//console.log(event.clientX)
  //                           mouse.x = event.clientX - cursor.positionPrev.x;
   //                          mouse.y = event.clientY - cursor.positionPrev.y;
