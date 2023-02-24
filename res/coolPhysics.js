@@ -28,11 +28,15 @@ var Engine = Matter.Engine,
 
 class Sketch{
     constructor(){
+        this.time = 0;
+        this.mouse = {
+            x:300,y:300
+        };
         this.physics();
+        this.mouseEvents();
         this.addObjects();
         this.initPaper();
         this.renderLoop();
-        this.mouseEvents();
     }
 
     physics(){
@@ -83,35 +87,7 @@ class Sketch{
         paper.view.draw();
     }
 
-    renderLoop(){
-        Body.translate(this.cursor,{
-            x: this.mouse.x,
-            y: this.mouse.y
-        })
-        window.requestAnimationFrame(this.renderLoop.bind(this));
-    }
-
     addObjects(){
-        this.mouse = Mouse.create(this.render.canvas);
-        this.mouseConstraint = MouseConstraint.create(this.engine, {
-            mouse: this.mouse,
-            //body: cursor,
-            constraint: {
-                // allow bodies on mouse to rotate
-                stiffness: 0.1,
-                angularStiffness: 0.1,
-                render: {
-                    visible: false
-                }
-            }
-        });
-        //console.log(mouseConstraint.body);
-    
-        
-    
-        // keep the mouse in sync with rendering
-        this.render.mouse = this.mouse;
-
         this.cursor = Bodies.circle(200,300,30,{
             isStatic:false,
             label: "test",
@@ -183,7 +159,26 @@ class Sketch{
                 })
             );
         };
+        /*this.mouse = Mouse.create(this.render.canvas);
+        this.mouseConstraint = MouseConstraint.create(this.engine, {
+            mouse: this.mouse,
+            //body: cursor,
+            constraint: {
+                // allow bodies on mouse to rotate
+                stiffness: 0.1,
+                angularStiffness: 0.1,
+                render: {
+                    visible: false
+                }
+            }
+        });
+        //console.log(mouseConstraint.body);
+    
+        
         Composite.add(this.world, this.mouseConstraint);
+        // keep the mouse in sync with rendering
+        this.render.mouse = this.mouse;*/
+
         Composite.add(this.world,circles);
         //Composite.add(engine.world,anchors);
         Composite.add(this.world,links);
@@ -194,10 +189,22 @@ class Sketch{
         this.render.canvas.addEventListener('mousemove', (event) => 
         {
             //console.log(render.canvas)
-            this.mouse.x = event.clientX - this.cursor.position.x;
-            this.mouse.y = event.clientY - this.cursor.position.y;
-            console.log("Mouse: "+ this.mouse.position.x)
+            this.mouse.x = event.clientX - this.cursor.positionPrev.x;
+            this.mouse.y = event.clientY - this.cursor.positionPrev.y;
+            //console.log("MouseX: "+ this.mouse.position.x + " Y: " + this.mouse.position.y)
+            //console.log("ClientX: "+ event.clientX + " Y: " + event.clientY)
+            //console.log("CursorX: "+ this.cursor.position.x + " Y: " + this.cursor.position.y)
         });
+    }
+
+    renderLoop(){
+        this.time += 0.05;
+        Body.translate(this.cursor,{
+            x: this.mouse.x,
+            y: this.mouse.y
+        });
+        window.requestAnimationFrame(this.renderLoop.bind(this));
+        console.log(this.mouse.x)
     }
 }
 let sketch = new Sketch();
