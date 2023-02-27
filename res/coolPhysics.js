@@ -57,6 +57,7 @@ class Sketch{
                 wireframeBackground: 'transparent'
             }
         });
+
         // run the renderer
         Render.run(this.render);
 
@@ -90,8 +91,11 @@ class Sketch{
         this.cursor = Bodies.circle(200,300,35,{
             isStatic:false,
             label: "test",
+            restitution: 0.1,
+            slop: 0.01,
+            mass: 10000,
             render:{
-                visible: false
+                visible: true
             }
         });
         var center = Bodies.circle(500,300,50,{
@@ -111,11 +115,11 @@ class Sketch{
             circles.push(
                 Bodies.circle(
                     x*10+500,
-                    y*10+300,
+                    y*10+400,
                     10,
                     {
-                        density: 0.005,
-                        restitution: 0
+                        density: 0.05,
+                        restitution: 0.8
                     }
                 )
             )
@@ -123,7 +127,7 @@ class Sketch{
             anchors.push(
                 Bodies.circle(
                     x*10+500,
-                    y*10+300,
+                    y*10+400,
                     10,{
                         isStatic:true
                     }
@@ -136,27 +140,36 @@ class Sketch{
             var x = radius*Math.cos(toDegrees(i));
             var y = radius*Math.sin(toDegrees(i));
             let next = circles[i+1]?circles[i+1]:circles[0]
+            let nextnext = circles[(i+2)%number];
             links.push(
                 Constraint.create({
                     bodyA:circles[i],
                     bodyB:anchors[i],
-                    stiffness:0.01
+                    stiffness:0.01,
+                    damping: 0.1
                 })
             );
             links.push(
                 Constraint.create({
                     bodyA:circles[i],
                     bodyB:next,
-                    stiffness:0.5
+                    stiffness:0.8
                 })
             );
             links.push(
                 Constraint.create({
                     bodyA:circles[i],
-                    bodyB:center,
-                    stiffness:0.001
+                    bodyB:nextnext,
+                    stiffness:0.4
                 })
             );
+           /* links.push(
+                Constraint.create({
+                    bodyA:circles[i],
+                    bodyB:center,
+                    stiffness:0.04
+                })
+            );*/
         };
         /*this.mouse = Mouse.create(this.render.canvas);
         this.mouseConstraint = MouseConstraint.create(this.engine, {
@@ -187,7 +200,7 @@ class Sketch{
     mouseEvents(){
         this.render.canvas.addEventListener('mousemove', (event) => 
         {
-            console.log(event)
+            //console.log(event)
             //this.mouse.x = event.clientX - this.cursor.positionPrev.x;
             //this.mouse.y = event.clientY - this.cursor.positionPrev.y;
             this.mouse.x = event.pageX;
@@ -205,7 +218,7 @@ class Sketch{
             y: this.mouse.y
         });
         window.requestAnimationFrame(this.renderLoop.bind(this));
-        //console.log(this.mouse);
+        console.log(this.mouse);
     }
 }
 let sketch = new Sketch();
