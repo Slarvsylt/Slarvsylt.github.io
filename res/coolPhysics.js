@@ -33,8 +33,8 @@ class Sketch{
             x:300,y:300
         };
         this.physics();
-        this.mouseEvents();
         this.addObjects();
+        this.mouseEvents();
         this.initPaper();
         this.renderLoop();
     }
@@ -57,7 +57,6 @@ class Sketch{
                 wireframeBackground: 'transparent'
             }
         });
-
         // run the renderer
         Render.run(this.render);
 
@@ -88,11 +87,11 @@ class Sketch{
     }
 
     addObjects(){
-        this.cursor = Bodies.circle(200,300,30,{
+        this.cursor = Bodies.circle(200,300,35,{
             isStatic:false,
             label: "test",
             render:{
-                visible: true
+                visible: false
             }
         });
         var center = Bodies.circle(500,300,50,{
@@ -148,14 +147,14 @@ class Sketch{
                 Constraint.create({
                     bodyA:circles[i],
                     bodyB:next,
-                    stiffness:0.9
+                    stiffness:0.5
                 })
             );
             links.push(
                 Constraint.create({
                     bodyA:circles[i],
                     bodyB:center,
-                    stiffness:0.01
+                    stiffness:0.001
                 })
             );
         };
@@ -188,9 +187,11 @@ class Sketch{
     mouseEvents(){
         this.render.canvas.addEventListener('mousemove', (event) => 
         {
-            //console.log(render.canvas)
-            this.mouse.x = event.clientX - this.cursor.positionPrev.x;
-            this.mouse.y = event.clientY - this.cursor.positionPrev.y;
+            console.log(event)
+            //this.mouse.x = event.clientX - this.cursor.positionPrev.x;
+            //this.mouse.y = event.clientY - this.cursor.positionPrev.y;
+            this.mouse.x = event.pageX;
+            this.mouse.y = event.pageY;
             //console.log("MouseX: "+ this.mouse.position.x + " Y: " + this.mouse.position.y)
             //console.log("ClientX: "+ event.clientX + " Y: " + event.clientY)
             //console.log("CursorX: "+ this.cursor.position.x + " Y: " + this.cursor.position.y)
@@ -199,12 +200,12 @@ class Sketch{
 
     renderLoop(){
         this.time += 0.05;
-        Body.translate(this.cursor,{
+        Body.setPosition(this.cursor,{
             x: this.mouse.x,
             y: this.mouse.y
         });
         window.requestAnimationFrame(this.renderLoop.bind(this));
-        console.log(this.mouse.x)
+        //console.log(this.mouse);
     }
 }
 let sketch = new Sketch();
