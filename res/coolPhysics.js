@@ -7,11 +7,6 @@ function toDegrees (angle) {
 function toRadians (angle) {
     return angle * Math.PI / 180;
 }
-// Only executed our code once the DOM is ready.
-//window.onload = function() {
-//    
-//}
-
 
 // module aliases
 var Engine = Matter.Engine,
@@ -32,11 +27,14 @@ class Sketch{
         this.mouse = {
             x:300,y:300
         };
+        this.width = 0;
+        this.height = 0;
         this.physics();
         this.addObjects();
         this.mouseEvents();
         this.initPaper();
         this.renderLoop();
+        
     }
 
     physics(){
@@ -57,7 +55,10 @@ class Sketch{
                 wireframeBackground: 'transparent'
             }
         });
-
+        this.width = this.render.canvas.offsetWidth;
+        this.height = this.render.canvas.offsetHeight;
+        console.log(this.width);
+        console.log(this.height);
         // run the renderer
         Render.run(this.render);
 
@@ -87,17 +88,7 @@ class Sketch{
         paper.view.draw();
     }
 
-    addObjects(){
-        this.cursor = Bodies.circle(200,300,35,{
-            isStatic:false,
-            label: "test",
-            restitution: 0.1,
-            slop: 0.01,
-            mass: 10000,
-            render:{
-                visible: true
-            }
-        });
+    addCircle(radius, points, posX, posY){
         var center = Bodies.circle(500,300,50,{
             isStatic:true
         });
@@ -105,17 +96,17 @@ class Sketch{
         var circles = [];
         var anchors = [];
         var links = [];
-        var radius = 20;
-        var number = 39;
+
+        var step = toDegrees(points)/360;
     
-        for(let i = 0; i < number; i++){
-            var x = radius*Math.cos(toDegrees(i)/360);
-            var y = radius*Math.sin(toDegrees(i)/360);
+        for(let i = 0; i < points; i++){
+            var x = radius*Math.cos(i/step);
+            var y = radius*Math.sin(i/step);
     
             circles.push(
                 Bodies.circle(
-                    x*10+500,
-                    y*10+400,
+                    x*10+posX,
+                    y*10+posY,
                     10,
                     {
                         density: 0.05,
@@ -126,8 +117,8 @@ class Sketch{
     
             anchors.push(
                 Bodies.circle(
-                    x*10+500,
-                    y*10+400,
+                    x*10+posX,
+                    y*10+posY,
                     10,{
                         isStatic:true
                     }
@@ -136,11 +127,9 @@ class Sketch{
         };
     
     
-        for(let i = 0; i < number; i++){
-            var x = radius*Math.cos(toDegrees(i));
-            var y = radius*Math.sin(toDegrees(i));
+        for(let i = 0; i < points; i++){
             let next = circles[i+1]?circles[i+1]:circles[0]
-            let nextnext = circles[(i+2)%number];
+            let nextnext = circles[(i+2)%points];
             links.push(
                 Constraint.create({
                     bodyA:circles[i],
@@ -163,14 +152,35 @@ class Sketch{
                     stiffness:0.4
                 })
             );
-           /* links.push(
-                Constraint.create({
-                    bodyA:circles[i],
-                    bodyB:center,
-                    stiffness:0.04
-                })
-            );*/
         };
+
+        Composite.add(this.world,circles);
+        Composite.add(this.world,links);
+        return {posX,posY}
+    }
+
+    addObjects(){
+        this.cursor = Bodies.circle(200,300,35,{
+            isStatic:false,
+            label: "test",
+            restitution: 0.1,
+            slop: 0.01,
+            mass: 10000,
+            render:{
+                visible: true
+            }
+        });
+        var center = Bodies.circle(500,300,50,{
+            isStatic:true
+        });
+
+        var smallCircleCenter;
+        var bigCircleCenter;
+        
+        smallCircleCenter = this.addCircle(20,30,this.width/2,this.height/2);
+
+        bigCircleCenter = this.addCircle(14,20,this.width/5,this.height/1.2);
+        
         /*this.mouse = Mouse.create(this.render.canvas);
         this.mouseConstraint = MouseConstraint.create(this.engine, {
             mouse: this.mouse,
@@ -184,16 +194,10 @@ class Sketch{
                 }
             }
         });
-        //console.log(mouseConstraint.body);
-    
-        
+            
         Composite.add(this.world, this.mouseConstraint);
-        // keep the mouse in sync with rendering
         this.render.mouse = this.mouse;*/
 
-        Composite.add(this.world,circles);
-        //Composite.add(engine.world,anchors);
-        Composite.add(this.world,links);
         Composite.add(this.world,this.cursor)
     }
 
@@ -218,7 +222,7 @@ class Sketch{
             y: this.mouse.y
         });
         window.requestAnimationFrame(this.renderLoop.bind(this));
-        console.log(this.mouse);
+        //console.log(this.mouse);
     }
 }
 let sketch = new Sketch();
