@@ -23,6 +23,7 @@ var Engine = Matter.Engine,
 
 class Sketch{
     constructor(){
+        
         this.time = 0;
         this.mouse = {
             x:300,y:300
@@ -30,11 +31,10 @@ class Sketch{
         this.width = 0;
         this.height = 0;
         this.physics();
+        //this.initPaper();
         this.addObjects();
         this.mouseEvents();
-        this.initPaper();
         this.renderLoop();
-        
     }
 
     physics(){
@@ -46,7 +46,7 @@ class Sketch{
 
         // create a renderer
         this.render = Render.create({
-            //element: document.body,
+            element: document.body,
             canvas: document.getElementById('renderCanvas'),
             engine: this.engine,
             options: {
@@ -55,10 +55,8 @@ class Sketch{
                 wireframeBackground: 'transparent'
             }
         });
-        this.width = this.render.canvas.offsetWidth;
-        this.height = this.render.canvas.offsetHeight;
-        console.log(this.width);
-        console.log(this.height);
+        this.width = this.render.canvas.width;
+        this.height = this.render.canvas.height;
         // run the renderer
         Render.run(this.render);
 
@@ -71,19 +69,12 @@ class Sketch{
 
     initPaper(){
         // Get a reference to the canvas object
-        var canvas = document.getElementById('renderCanvas');
+        var canvas = document.getElementById('paperCanvas');
         // Create an empty project and a view for the canvas:
         paper.setup(canvas);
         // Create a Paper.js Path to draw a line into it:
-        var path = new paper.Path();
-        // Give the stroke a color
-        path.strokeColor = 'black';
-        var start = new paper.Point(100, 100);
-        // Move to start and draw a line from there
-        path.moveTo(start);
-        // Note that the plus operator on Point objects does not work
-        // in JavaScript. Instead, we need to call the add() function:
-        path.lineTo(start.add([ 200, -50 ]));
+        var myCircle = new paper.Path.Circle(new paper.Point(100, 70), 50);
+        myCircle.fillColor = 'black';
         // Draw the view now:
         paper.view.draw();
     }
@@ -177,9 +168,9 @@ class Sketch{
         var smallCircleCenter;
         var bigCircleCenter;
         
-        smallCircleCenter = this.addCircle(20,30,this.width/2,this.height/2);
+        bigCircleCenter = this.addCircle(20,30,500,300);
 
-        bigCircleCenter = this.addCircle(14,20,this.width/5,this.height/1.2);
+        smallCircleCenter = this.addCircle(14,20,200,500);
         
         /*this.mouse = Mouse.create(this.render.canvas);
         this.mouseConstraint = MouseConstraint.create(this.engine, {
@@ -207,8 +198,9 @@ class Sketch{
             //console.log(event)
             //this.mouse.x = event.clientX - this.cursor.positionPrev.x;
             //this.mouse.y = event.clientY - this.cursor.positionPrev.y;
-            this.mouse.x = event.pageX;
-            this.mouse.y = event.pageY;
+            this.mouse.x = event.offsetX;
+            this.mouse.y = event.offsetY;
+            console.log("Before move: ", this.mouse);
             //console.log("MouseX: "+ this.mouse.position.x + " Y: " + this.mouse.position.y)
             //console.log("ClientX: "+ event.clientX + " Y: " + event.clientY)
             //console.log("CursorX: "+ this.cursor.position.x + " Y: " + this.cursor.position.y)
@@ -221,6 +213,7 @@ class Sketch{
             x: this.mouse.x,
             y: this.mouse.y
         });
+        console.log("After move: ", this.mouse);
         window.requestAnimationFrame(this.renderLoop.bind(this));
         //console.log(this.mouse);
     }

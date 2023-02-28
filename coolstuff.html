@@ -15,7 +15,10 @@
                COOL STUFF!
            </span>
         </a>
-        <canvas id="renderCanvas" style="position: absolute; transform: translate(0px, -0%);">
+        <canvas id="renderCanvas" style="position: relative; transform: translate(0px, -0%);">
+            
+        </canvas>
+        <canvas id="paperCanvas" style="position: absolute; transform: translate(0px, -0%); pointer-events: none; z-index: 1000; width: 100vw; height: 100vh;">
             
         </canvas>
         <script type="text/javascript" src="/res/coolPhysics.js"></script>
@@ -31,7 +34,7 @@
 
         <div id="wrapper">
             <div class="main_container">
-                <div class="cool" style="font-size: 40px;">
+                <div class="cool" style="font-size: 40px; z-index: -1; width: 10%; margin: auto;">
                     TACK!!
                 </div>
             </div>
