@@ -50,6 +50,7 @@ class Sketch{
             canvas: document.getElementById('renderCanvas'),
             engine: this.engine,
             options: {
+                pixelRatio: 0.9,
                 wireframes: false,
                 background: 'transparent',
                 wireframeBackground: 'transparent'
